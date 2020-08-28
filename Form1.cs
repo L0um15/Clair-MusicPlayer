@@ -1,13 +1,16 @@
-﻿using System;
+﻿using AxWMPLib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WMPLib;
 
 namespace Musicplayer
 {
@@ -33,23 +36,23 @@ namespace Musicplayer
         }
         private void playButton_Click(object sender, EventArgs e)
         {
-            axWindowsMediaPlayer1.Ctlcontrols.play();
+            mPlayer.Ctlcontrols.play();
         }
 
         private void stopButton_Click(object sender, EventArgs e)
         {
-            axWindowsMediaPlayer1.Ctlcontrols.stop();
+            mPlayer.Ctlcontrols.stop();
         }
 
         private void pauseButton_Click(object sender, EventArgs e)
         {
-            axWindowsMediaPlayer1.Ctlcontrols.pause();
+            mPlayer.Ctlcontrols.pause();
         }
 
 
         private void songList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            axWindowsMediaPlayer1.URL = filePaths[songList.SelectedIndex];
+            mPlayer.URL = filePaths[songList.SelectedIndex];
 
             getMetaFromMusic(filePaths[songList.SelectedIndex]);
 
@@ -66,6 +69,8 @@ namespace Musicplayer
             }
         }
 
+        
+
         private void folderButton_Click(object sender, EventArgs e)
         {
             ofd.Multiselect = true;
@@ -77,16 +82,20 @@ namespace Musicplayer
                     songList.Items.Clear();
                 }
 
-                axWindowsMediaPlayer1.URL = filePaths[0];
+                
 
                 for (int i = 0; i < fileNames.Length; i++)
                 {
                     songList.Items.Add(fileNames[i]);
                 }
 
+                songList.SetSelected(0, true);
+
+                mPlayer.URL = filePaths[songList.SelectedIndex];
+
                 getMetaFromMusic(filePaths[0]);
 
-                axWindowsMediaPlayer1.Ctlcontrols.play();
+                mPlayer.Ctlcontrols.play();
             }
         }
 
@@ -121,6 +130,22 @@ namespace Musicplayer
             }
 
         }
+
+        private void mPlayer_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            if (e.newState == 8) {
+
+                if (songList.SelectedIndex != songList.Items.Count - 1)
+                { 
+                    BeginInvoke(new Action(() => {
+                        songList.SetSelected(songList.SelectedIndex + 1, true);
+                    }));
+                }
+
+            }
+        }
+
+
 
     }
 }

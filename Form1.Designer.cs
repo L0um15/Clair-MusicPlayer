@@ -33,7 +33,7 @@
             this.pauseButton = new System.Windows.Forms.PictureBox();
             this.stopButton = new System.Windows.Forms.PictureBox();
             this.folderButton = new System.Windows.Forms.PictureBox();
-            this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
+            this.mPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.albumArtPicturebox = new System.Windows.Forms.PictureBox();
             this.Artist = new System.Windows.Forms.Label();
             this.artistLabel = new System.Windows.Forms.Label();
@@ -46,7 +46,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pauseButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stopButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.folderButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mPlayer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArtPicturebox)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.expandListButton)).BeginInit();
@@ -97,15 +97,17 @@
             this.folderButton.TabStop = false;
             this.folderButton.Click += new System.EventHandler(this.folderButton_Click);
             // 
-            // axWindowsMediaPlayer1
+            // mPlayer
             // 
-            this.axWindowsMediaPlayer1.Enabled = true;
-            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(10, 12);
-            this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
-            this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
-            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(31, 35);
-            this.axWindowsMediaPlayer1.TabIndex = 5;
-            this.axWindowsMediaPlayer1.Visible = false;
+            this.mPlayer.AccessibleName = "mPlayer";
+            this.mPlayer.Enabled = true;
+            this.mPlayer.Location = new System.Drawing.Point(10, 12);
+            this.mPlayer.Name = "mPlayer";
+            this.mPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("mPlayer.OcxState")));
+            this.mPlayer.Size = new System.Drawing.Size(31, 35);
+            this.mPlayer.TabIndex = 5;
+            this.mPlayer.Visible = false;
+            this.mPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.mPlayer_PlayStateChange);
             // 
             // albumArtPicturebox
             // 
@@ -201,7 +203,7 @@
             this.Controls.Add(this.artistLabel);
             this.Controls.Add(this.Artist);
             this.Controls.Add(this.albumArtPicturebox);
-            this.Controls.Add(this.axWindowsMediaPlayer1);
+            this.Controls.Add(this.mPlayer);
             this.Controls.Add(this.folderButton);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.pauseButton);
@@ -214,7 +216,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pauseButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stopButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.folderButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mPlayer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArtPicturebox)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.expandListButton)).EndInit();
@@ -230,7 +232,7 @@
         private System.Windows.Forms.PictureBox pauseButton;
         private System.Windows.Forms.PictureBox stopButton;
         private System.Windows.Forms.PictureBox folderButton;
-        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
+        private AxWMPLib.AxWindowsMediaPlayer mPlayer;
         private System.Windows.Forms.PictureBox albumArtPicturebox;
         private System.Windows.Forms.Label Artist;
         private System.Windows.Forms.Label artistLabel;
