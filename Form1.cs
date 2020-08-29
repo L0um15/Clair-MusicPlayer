@@ -17,22 +17,17 @@ namespace Musicplayer
     public partial class Musicplayer : Form
     {
 
-        int orginalWidth, croppedWidth;
+        TagLib.File file;
         String[] fileNames, filePaths;
         OpenFileDialog ofd = new OpenFileDialog();
-
-
+        Boolean isLeftPanelVisible = false;
         public Musicplayer()
         {
             InitializeComponent();
-            orginalWidth = this.Width;
-            croppedWidth = 401;
-            this.Width = croppedWidth;
             albumArtPicturebox.Image = noAlbumPictureBox.Image;
-            
-            artistLabel.Font = new Font("arial", 14);
-            artistLabel.Text = "No Music file selected";
-
+            albumArtNextPicturebox.Image = noAlbumPictureBox.Image;
+            albumArtFuturePicturebox.Image = noAlbumPictureBox.Image;
+            songTitleLabel.Text = "No Music file selected";
         }
         private void playButton_Click(object sender, EventArgs e)
         {
@@ -54,18 +49,33 @@ namespace Musicplayer
         {
             mPlayer.URL = filePaths[songList.SelectedIndex];
 
-            getMetaFromMusic(filePaths[songList.SelectedIndex]);
+            getCurrentMetaFromMusic(filePaths[songList.SelectedIndex]);
+
+            if (songList.SelectedIndex + 1 < songList.Items.Count) {
+                getNextMetaFromMusic(filePaths[songList.SelectedIndex + 1]);
+            }
+
+            if (songList.SelectedIndex + 2 < songList.Items.Count) {
+                getFutureMetaFromMusic(filePaths[songList.SelectedIndex + 2]);
+            }
+
+            
+
+            
+            
 
         }
 
         private void expandListButton_Click(object sender, EventArgs e)
         {
-            if (this.Width != orginalWidth)
+            if (isLeftPanelVisible)
             {
-                this.Width = orginalWidth;
+                leftpanel.Hide();
+                isLeftPanelVisible = false;
             }
             else {
-                this.Width = croppedWidth;
+                leftpanel.Show();
+                isLeftPanelVisible = true;
             }
         }
 
@@ -81,7 +91,6 @@ namespace Musicplayer
                 if (songList.Items.Count > 0) {
                     songList.Items.Clear();
                 }
-
                 
 
                 for (int i = 0; i < fileNames.Length; i++)
@@ -91,25 +100,32 @@ namespace Musicplayer
 
                 songList.SetSelected(0, true);
 
-                mPlayer.URL = filePaths[songList.SelectedIndex];
-
-                getMetaFromMusic(filePaths[0]);
-
                 mPlayer.Ctlcontrols.play();
             }
         }
 
+        private void previousButton_Click(object sender, EventArgs e)
+        {
+            if (songList.SelectedIndex > 0)
+            {
+                songList.SetSelected(songList.SelectedIndex - 1, true);
+            }
+        }
 
-        private void getMetaFromMusic(String path) {
+        private void nextButton_Click(object sender, EventArgs e)
+        {
+            if (songList.SelectedIndex < songList.Items.Count - 1) {
+                songList.SetSelected(songList.SelectedIndex + 1, true);
+            }
+            
+        }
+
+        private void getCurrentMetaFromMusic(String path) {
 
 
-            TagLib.File file = TagLib.File.Create(path);
+            file = TagLib.File.Create(path);
 
-            artistLabel.Font = new Font("arial", 14);
             artistLabel.Text = file.Tag.Artists[0];
-
-
-            songTitleLabel.Font = new Font("arial", 14);
             songTitleLabel.Text = file.Tag.Title;
 
             var mstream = new MemoryStream();
@@ -131,8 +147,107 @@ namespace Musicplayer
 
         }
 
+        private void getNextMetaFromMusic(String path)
+        {
+
+
+            file = TagLib.File.Create(path);
+
+            var mstream = new MemoryStream();
+            var picture = file.Tag.Pictures.FirstOrDefault();
+            if (picture != null)
+            {
+                byte[] data = picture.Data.Data;
+                mstream.Write(data, 0, Convert.ToInt32(data.Length));
+                var bm = new Bitmap(mstream, false);
+                mstream.Dispose();
+                albumArtNextPicturebox.Image = bm;
+            }
+            else
+            {
+                // Ouch it appears that music file has no album art PeepoSad.
+                albumArtNextPicturebox.Image = noAlbumPictureBox.Image;
+
+            }
+
+        }
+
+        private void getFutureMetaFromMusic(String path)
+        {
+
+
+            file = TagLib.File.Create(path);
+
+            var mstream = new MemoryStream();
+            var picture = file.Tag.Pictures.FirstOrDefault();
+            if (picture != null)
+            {
+                byte[] data = picture.Data.Data;
+                mstream.Write(data, 0, Convert.ToInt32(data.Length));
+                var bm = new Bitmap(mstream, false);
+                mstream.Dispose();
+                albumArtFuturePicturebox.Image = bm;
+            }
+            else
+            {
+                // Ouch it appears that music file has no album art PeepoSad.
+                albumArtFuturePicturebox.Image = noAlbumPictureBox.Image;
+
+            }
+
+        }
+
+
+        private void Musicplayer_SizeChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized) {
+                notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+                notifyIcon.BalloonTipText = "I'be waiting here.";
+                notifyIcon.ShowBalloonTip(1000);
+                this.ShowInTaskbar = false;
+                notifyIcon.Visible = true;
+            }
+        }
+
+        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
+            notifyIcon.Visible = false;
+        }
+
+        private void volumeslider_ValueChanged(object sender, EventArgs e)
+        {
+            mPlayer.settings.volume = (int) volumeslider.Value;
+        }
+
+        private void durationsliderProgression_Tick(object sender, EventArgs e)
+        {
+            durationslider.Value = (int)mPlayer.Ctlcontrols.currentPosition;
+        }
+
+        private void durationslider_MouseClick(object sender, MouseEventArgs e)
+        {
+            mPlayer.Ctlcontrols.currentPosition = (int) durationslider.Value;
+        }
+
         private void mPlayer_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e)
         {
+
+            if (e.newState == 3)
+            {
+                playButton.Hide();
+                pauseButton.Show();
+
+                double duration = mPlayer.currentMedia.duration;
+
+                durationslider.Maximum = (int)duration;
+            }
+            else {
+                pauseButton.Hide();
+                playButton.Show();
+            }
+            
             if (e.newState == 8) {
 
                 if (songList.SelectedIndex != songList.Items.Count - 1)
