@@ -1,0 +1,76 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Clair.assets.Styles">
+
+
+    <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="IsTabStop" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Border x:Name="rectangle"
+                                SnapsToDevicePixels="True"
+                                Background="#42e36d"
+                                Opacity="0.3"
+                                CornerRadius="4"
+                                Height="{TemplateBinding Height}"
+                                Width="{TemplateBinding Width}"/>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetName="rectangle" Storyboard.TargetProperty="Opacity"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation From="1" Duration="0:0:0.3" Storyboard.TargetName="rectangle" Storyboard.TargetProperty="Opacity"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style TargetType="{x:Type ScrollBar}">
+        <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
+        <Setter Property="Background" Value="#000" />
+        <Setter Property="BorderBrush" Value="LimeGreen" />
+    <Setter Property="Foreground" Value="Lime"/>
+        <Setter Property="BorderThickness" Value="0.1" />
+        <Setter Property="Width" Value="10"/>
+        <Setter Property="MinWidth" Value="{Binding Width}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                    <Grid x:Name="Bg" SnapsToDevicePixels="true">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.00001*"/>
+                        </Grid.RowDefinitions>
+                        <Border
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Grid.Row="1"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}" />
+                        <Track x:Name="PART_Track"
+                            IsDirectionReversed="true"
+                            IsEnabled="{TemplateBinding IsMouseOver}"
+                            Grid.Row="1">
+                            <Track.Thumb>
+                                <Thumb Style="{StaticResource ScrollBarThumb}"/>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

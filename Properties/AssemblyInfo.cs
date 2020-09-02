@@ -1,15 +1,17 @@
 ﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 // Ogólne informacje o zestawie są kontrolowane poprzez następujący 
 // zestaw atrybutów. Zmień wartości tych atrybutów, aby zmodyfikować informacje
 // powiązane z zestawem.
-[assembly: AssemblyTitle("Musicplayer")]
+[assembly: AssemblyTitle("Clairfy")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Musicplayer")]
+[assembly: AssemblyProduct("Clairfy")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,8 +21,25 @@ using System.Runtime.InteropServices;
 // COM, ustaw wartość true dla atrybutu ComVisible tego typu.
 [assembly: ComVisible(false)]
 
-// Następujący identyfikator GUID jest identyfikatorem biblioteki typów w przypadku udostępnienia tego projektu w modelu COM
-[assembly: Guid("0fd8ebc1-b5a2-48c6-8375-45068f32b14d")]
+//Aby rozpocząć kompilację aplikacji możliwych do zlokalizowania, ustaw
+//<UICulture>Kultura_używana_podczas_kodowania</UICulture> w pliku csproj
+//w grupie <PropertyGroup>. Jeśli na przykład jest używany język angielski (USA)
+//w plikach źródłowych ustaw dla elementu <UICulture> wartość en-US. Następnie usuń komentarz dla
+//poniższego atrybutu NeutralResourceLanguage. Zaktualizuj wartość „en-US” w
+//poniższej linii tak, aby dopasować ustawienie UICulture w pliku projektu.
+
+//[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
+
+
+[assembly: ThemeInfo(
+    ResourceDictionaryLocation.None, //gdzie znajdują się słowniki zasobów specyficznych dla motywów
+                                     //(używane, jeśli nie można odnaleźć zasobu na stronie,
+                                     // lub słowniki zasobów aplikacji)
+    ResourceDictionaryLocation.SourceAssembly //gdzie znajduje się słownik zasobów ogólnych
+                                              //(używane, jeśli nie można odnaleźć zasobu na stronie,
+                                              // aplikacji lub słowników zasobów specyficznych dla motywów)
+)]
+
 
 // Informacje o wersji zestawu zawierają następujące cztery wartości:
 //

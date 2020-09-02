@@ -1,0 +1,50 @@
+﻿<Window x:Class="Clair.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Clair"
+        xmlns:tb="http://www.hardcodet.net/taskbar" 
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        Icon="assets/icons/icon.ico"
+        Title="Clair" Height="720" Width="1280">
+
+    <Window.Resources>
+        <BitmapImage x:Key="playbutton" UriSource="assets/buttons/play.png"/>
+        <BitmapImage x:Key="pausebutton" UriSource="assets/buttons/pause.png" />
+        <BitmapImage x:Key="folderbutton" UriSource="assets/buttons/folder.png"/>
+        <BitmapImage x:Key="nextbutton" UriSource="assets/buttons/next.png"/>
+        <BitmapImage x:Key="previousbutton" UriSource="assets/buttons/previous.png"/>
+        <BitmapImage x:Key="stopbutton" UriSource="assets/buttons/stop.png"/>
+        <BitmapImage x:Key="expandlistbutton" UriSource="assets/buttons/arrow.png"/>
+        <BitmapImage x:Key="volumeimage" UriSource="assets/buttons/volume.png" />
+        <BitmapImage x:Key="noalbum" UriSource="assets/images/noalbum.png"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="599*"/>
+            <RowDefinition Height="90*"/>
+        </Grid.RowDefinitions>
+        <Rectangle Grid.Row="0" Fill="#000"></Rectangle>
+        <Rectangle Grid.Row="1" Fill="#171717"></Rectangle>
+        <Image Name="albumArtImage" Source="{StaticResource noalbum}" HorizontalAlignment="Center" Margin="0,0,0,0" Width="289" Height="289" VerticalAlignment="Center"/>
+        <Image x:Name="albumArtImage2" Source="{StaticResource noalbum}" HorizontalAlignment="Center" Margin="825,0,216,0" Width="220" Height="220" VerticalAlignment="Center"/>
+        <Image x:Name="albumArtImage3" Source="{StaticResource noalbum}" HorizontalAlignment="Center" Margin="1063,0,-9,0" Width="160" Height="160" VerticalAlignment="Center"/>
+        <ListBox Foreground="#FFF" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="songList" BorderThickness="0" Background="#080808" HorizontalAlignment="Left" Height="599" VerticalAlignment="Top" Width="323" SelectionChanged="songList_SelectionChanged" Visibility="Hidden"/>
+        <Image RenderOptions.BitmapScalingMode="HighQuality" RenderOptions.EdgeMode="Aliased" Source="{StaticResource playbutton}" Name="playButton" HorizontalAlignment="Left" Height="40" Margin="616,3,0,0" Grid.Row="1" VerticalAlignment="Top" Width="40" MouseLeftButtonDown="playButton_MouseLeftButtonDown"/>
+        <Image Visibility="Collapsed" RenderOptions.BitmapScalingMode="HighQuality" RenderOptions.EdgeMode="Aliased" Source="{StaticResource pausebutton}" Name="pauseButton" HorizontalAlignment="Left" Height="40" Margin="616,3,0,0" Grid.Row="1" VerticalAlignment="Top" Width="40" MouseLeftButtonDown="pauseButton_MouseLeftButtonDown"/>
+        <Image RenderOptions.BitmapScalingMode="HighQuality" RenderOptions.EdgeMode="Aliased" Source="{StaticResource previousbutton}" Name="previousButton" HorizontalAlignment="Left" Height="32" Margin="579,7,0,0" Grid.Row="1" VerticalAlignment="Top" Width="32" MouseLeftButtonDown="previousButton_MouseLeftButtonDown"/>
+        <Image RenderOptions.BitmapScalingMode="HighQuality" RenderOptions.EdgeMode="Aliased" Source="{StaticResource stopbutton}" Name="stopButton" HorizontalAlignment="Left" Height="32" Margin="542,7,0,0" Grid.Row="1" VerticalAlignment="Top" Width="32" MouseLeftButtonDown="stopButton_MouseLeftButtonDown"/>
+        <Image RenderOptions.BitmapScalingMode="HighQuality" RenderOptions.EdgeMode="Aliased" Source="{StaticResource nextbutton}" Name="nextButton" HorizontalAlignment="Left" Height="32" Margin="661,7,0,0" Grid.Row="1" VerticalAlignment="Top" Width="32" MouseLeftButtonDown="nextButton_MouseLeftButtonDown"/>
+        <Image RenderOptions.BitmapScalingMode="HighQuality" RenderOptions.EdgeMode="Aliased" Source="{StaticResource folderbutton}" Name="folderButton" HorizontalAlignment="Left" Height="32" Margin="698,7,0,0" Grid.Row="1" VerticalAlignment="Top" Width="32" MouseLeftButtonDown="folderButton_MouseLeftButtonDown"/>
+        <Image RenderOptions.BitmapScalingMode="HighQuality" RenderOptions.EdgeMode="Aliased" Source="{StaticResource expandlistbutton}" Name="arrowButton" HorizontalAlignment="Left" Height="65" Margin="9,13,0,0" Grid.Row="1" VerticalAlignment="Top" Width="65" MouseLeftButtonDown="arrowButton_MouseLeftButtonDown" />
+        <Image RenderOptions.BitmapScalingMode="HighQuality" RenderOptions.EdgeMode="Aliased" Source="{StaticResource volumeimage}" Name="volumeImage" Height="32" Width="32" Margin="1109,28,133,30" Grid.Row="1"/>
+        <Label Name="songTitle" FontSize="14" Foreground="#FFF" Content="No Music file selected" HorizontalAlignment="Left" Margin="79,13,0,0" Grid.Row="1" VerticalAlignment="Top" Width="244"/>
+        <Label Name="artistTitle" FontSize="12"  Foreground="#FFF" Content="" HorizontalAlignment="Left" Margin="79,44,0,0" Grid.Row="1" VerticalAlignment="Top" Width="244"/>
+        <Slider Name="durationSlider" HorizontalAlignment="Left" Margin="386,55,0,0" Grid.Row="1" VerticalAlignment="Top" Width="500" MouseLeftButtonUp="durationSlider_MouseLeftButtonUp"/>
+        <Slider Name="volumeSlider" HorizontalAlignment="Left" Margin="1146,24,0,0" Grid.Row="1" VerticalAlignment="Top" Height="40" Width="100" Value="50" Maximum="100" ValueChanged="volumeSlider_ValueChanged"/>
+        
+    </Grid>
+</Window>

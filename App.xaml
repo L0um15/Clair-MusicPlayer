@@ -1,0 +1,15 @@
+﻿<Application x:Class="Clair.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Clair"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="assets/styles/scrollbar.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="assets/styles/slider.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="assets/styles/listboxitem.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
