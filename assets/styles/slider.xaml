@@ -11,7 +11,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
-                    <Border CornerRadius="4" BorderThickness="0" BorderBrush="Black" Background="Black" Height="6"/>
+                    <Border CornerRadius="0 4 4 0" BorderThickness="0" BorderBrush="Black" Background="Black" Height="6"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -23,7 +23,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
-                    <Border CornerRadius="4" SnapsToDevicePixels="True" Background="#42e36d"  BorderThickness="0" BorderBrush="#42e36d" Height="6"/>
+                    <Border CornerRadius="4 0 0 4" SnapsToDevicePixels="True" Background="#eb345f"  BorderThickness="0" BorderBrush="#eb345f" Height="6"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -35,7 +35,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
-                    <Ellipse  Height="12" Width="12" Fill="#42e36d"></Ellipse>
+                    <Rectangle Height="12" Width="4" Fill="#eb345f"></Rectangle>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -48,7 +48,7 @@
                 <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Track Grid.Row="1" x:Name="PART_Track"   >
+            <Track Grid.Row="1" x:Name="PART_Track">
                 <Track.DecreaseRepeatButton>
                     <RepeatButton Style="{StaticResource SliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
                 </Track.DecreaseRepeatButton>

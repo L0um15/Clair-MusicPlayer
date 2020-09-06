@@ -85,27 +85,38 @@ namespace Clair
             double duration = mPlayer.NaturalDuration.TimeSpan.TotalSeconds;
             durationSlider.Maximum = (int)duration;
             durationSlider.IsMoveToPointEnabled = true;
+            TimeSpan t = mPlayer.NaturalDuration.TimeSpan;
+            string time = t.ToString(@"mm\:ss");
+            totalTime.Text = time;
             dispatcherTimer.Start();
         }
 
         private void mPlayer_MediaEnded(object sender, EventArgs args) {
 
-            if (songList.SelectedIndex < songList.Items.Count - 1) {
+            if (songList.SelectedIndex < songList.Items.Count - 1)
+            {
                 songList.SelectedIndex += 1;
             }
-
+            else
+            {
+                playButton.Visibility = Visibility.Visible;
+                pauseButton.Visibility = Visibility.Hidden;
+            }
+                
         }
 
-
-
-        private void getCurrentMetaFromMusic(String path) {
-
+        private void getArtistTagFromFile(String path) {
             TagLib.File file = TagLib.File.Create(path);
 
             songTitle.Content = file.Tag.Title;
 
             artistTitle.Content = file.Tag.Artists[0];
+        }
 
+
+        private void getAlbumArtFromFile(int index,String path) {
+
+            TagLib.File file = TagLib.File.Create(path);
 
             var picture = file.Tag.Pictures.FirstOrDefault();
 
@@ -120,67 +131,26 @@ namespace Clair
                 bitmap.StreamSource = memory;
                 bitmap.EndInit();
 
-
-                albumArtImage.Source = bitmap;
+                if (index == 0)
+                    albumArtImage.Source = bitmap;
+                else if (index == 1)
+                    albumArtImage2.Source = bitmap;
+                else if (index == 2)
+                    albumArtImage3.Source = bitmap;
             }
-            else { 
-                //Music file does not contain album art.
-
-            }
-        }
-
-        private void getNextMetaFromMusic(String path)
-        {
-
-            TagLib.File file = TagLib.File.Create(path);
-
-            var picture = file.Tag.Pictures.FirstOrDefault();
-
-            if (picture != null)
-            {
-                MemoryStream memory = new MemoryStream(picture.Data.Data);
-
-                memory.Seek(0, SeekOrigin.Begin);
-
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = memory;
-                bitmap.EndInit();
+            else {
+                /*
+                 * If music file does not contain album art, set "noalbum.jpg as its cover".
+                 * Index starts from 0.
+                 */
 
 
-                albumArtImage2.Source = bitmap;
-            }
-            else
-            {
-                //Music file does not contain album art.
-
-            }
-        }
-
-        private void getFutureMetaFromMusic(String path)
-        {
-
-            TagLib.File file = TagLib.File.Create(path);
-
-            var picture = file.Tag.Pictures.FirstOrDefault();
-
-            if (picture != null)
-            {
-                MemoryStream memory = new MemoryStream(picture.Data.Data);
-
-                memory.Seek(0, SeekOrigin.Begin);
-
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = memory;
-                bitmap.EndInit();
-
-
-                albumArtImage3.Source = bitmap;
-            }
-            else
-            {
-                //Music file does not contain album art.
+                if (index == 0)
+                    albumArtImage.Source = new BitmapImage(new Uri("assets/images/noalbum.jpg", UriKind.RelativeOrAbsolute));
+                else if (index == 1)
+                    albumArtImage2.Source = new BitmapImage(new Uri("assets/images/noalbum.jpg", UriKind.RelativeOrAbsolute));
+                else if (index == 2)
+                    albumArtImage3.Source = new BitmapImage(new Uri("assets/images/noalbum.jpg", UriKind.RelativeOrAbsolute));
 
             }
         }
@@ -224,26 +194,23 @@ namespace Clair
             try
             {
                 mPlayer.Open(new Uri(filePaths[songList.SelectedIndex]));
-                getCurrentMetaFromMusic(filePaths[songList.SelectedIndex]);
+                
+                getArtistTagFromFile(filePaths[songList.SelectedIndex]);
+                getAlbumArtFromFile(0,filePaths[songList.SelectedIndex]);
+
+                /*
+                 * Those lines calls getAlbumArtFromFile(String path) method.     
+                 * Else statement sets "noalbum.png" as album art IF there is no more queued songs.
+                 */
 
                 if (songList.SelectedIndex + 1 < songList.Items.Count)
-                {
-                    getNextMetaFromMusic(filePaths[songList.SelectedIndex + 1]);
-                }
-                else {
+                    getAlbumArtFromFile(1, filePaths[songList.SelectedIndex + 1]);
+                else
                     albumArtImage2.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
-                }
-                    
                 if (songList.SelectedIndex + 2 < songList.Items.Count)
-                {
-                    getFutureMetaFromMusic(filePaths[songList.SelectedIndex + 2]);
-                }
-                else {
+                    getAlbumArtFromFile(2, filePaths[songList.SelectedIndex + 2]);
+                else
                     albumArtImage3.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
-                }
-                    
-
-
             }
             catch (IndexOutOfRangeException) { 
                 //Ignore this...
@@ -312,6 +279,27 @@ namespace Clair
         private void durationSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             mPlayer.Position = TimeSpan.FromSeconds((double)durationSlider.Value);
+        }
+
+        private void durationSlider_DragCompleted(object sender, EventArgs e) {
+            mPlayer.Position = TimeSpan.FromSeconds((double)durationSlider.Value);
+
+            if(!dispatcherTimer.IsEnabled)
+                dispatcherTimer.Start();
+        }
+        
+        private void durationSlider_DragStarted(object sender, EventArgs e) {
+            if (dispatcherTimer.IsEnabled) {
+                dispatcherTimer.Stop();
+            }
+                
+        }
+
+        private void durationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            TimeSpan t = TimeSpan.FromSeconds(durationSlider.Value);
+            string time = t.ToString(@"mm\:ss");
+            currentPosition.Text = time;
         }
 
         private void nextButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
