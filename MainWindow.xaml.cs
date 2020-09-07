@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
@@ -27,12 +29,11 @@ namespace Clair
     /// </summary>
     public partial class MainWindow : Window
     {
-
         String[] fileNames, filePaths;
         private bool isMediaPlaying = false;
         private MediaPlayer mPlayer = new MediaPlayer();
         Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-        DispatcherTimer dispatcherTimer = new DispatcherTimer();
+        DispatcherTimer durationTimer = new DispatcherTimer();
         TaskbarIcon taskbarIcon = new TaskbarIcon();
 
         public MainWindow()
@@ -40,12 +41,11 @@ namespace Clair
             InitializeComponent();
             mPlayer.MediaEnded += mPlayer_MediaEnded;
             mPlayer.MediaOpened += mPlayer_MediaOpened;
-            dispatcherTimer.Tick += dispatcherTimer_Tick;
+            durationTimer.Tick += dispatcherTimer_Tick;
+            durationTimer.Interval = new TimeSpan(0, 0, 1);
             this.StateChanged += Window_StateChanged;
             taskbarIcon.TrayLeftMouseDown += taskbar_TrayLeftMouseDown;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             volumeSlider.IsMoveToPointEnabled = true;
-            
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
@@ -72,13 +72,10 @@ namespace Clair
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs args) {
-            //TODO: Put TrackTimer here.
-
             if (isMediaPlaying)
             {
                 durationSlider.Value = (int) mPlayer.Position.TotalSeconds;
             }
-
         }
 
         private void mPlayer_MediaOpened(object sender, EventArgs args) {
@@ -88,7 +85,7 @@ namespace Clair
             TimeSpan t = mPlayer.NaturalDuration.TimeSpan;
             string time = t.ToString(@"mm\:ss");
             totalTime.Text = time;
-            dispatcherTimer.Start();
+            durationTimer.Start();
         }
 
         private void mPlayer_MediaEnded(object sender, EventArgs args) {
@@ -101,6 +98,7 @@ namespace Clair
             {
                 playButton.Visibility = Visibility.Visible;
                 pauseButton.Visibility = Visibility.Hidden;
+                isMediaPlaying = false;
             }
                 
         }
@@ -243,11 +241,9 @@ namespace Clair
                 mPlayer.Stop();
                 isMediaPlaying = false;
             }
-            
-
         }
 
-        private void arrowButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void listButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (songList.Visibility == Visibility.Hidden)
             {
@@ -266,8 +262,6 @@ namespace Clair
                 mPlayer.Pause();
                 isMediaPlaying = false;
             }
-            
-            
         }
 
 
@@ -283,16 +277,14 @@ namespace Clair
 
         private void durationSlider_DragCompleted(object sender, EventArgs e) {
             mPlayer.Position = TimeSpan.FromSeconds((double)durationSlider.Value);
-
-            if(!dispatcherTimer.IsEnabled)
-                dispatcherTimer.Start();
+            if(!durationTimer.IsEnabled)
+                durationTimer.Start();
         }
         
         private void durationSlider_DragStarted(object sender, EventArgs e) {
-            if (dispatcherTimer.IsEnabled) {
-                dispatcherTimer.Stop();
-            }
-                
+            if (durationTimer.IsEnabled) {
+                durationTimer.Stop();
+            } 
         }
 
         private void durationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

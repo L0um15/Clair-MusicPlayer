@@ -18,10 +18,9 @@
         <BitmapImage x:Key="nextbutton" UriSource="assets/buttons/next.png"/>
         <BitmapImage x:Key="previousbutton" UriSource="assets/buttons/previous.png"/>
         <BitmapImage x:Key="stopbutton" UriSource="assets/buttons/stop.png"/>
-        <BitmapImage x:Key="expandlistbutton" UriSource="assets/buttons/arrow.png"/>
+        <BitmapImage x:Key="expandlistbutton" UriSource="assets/buttons/list.png"/>
         <BitmapImage x:Key="volumeimage" UriSource="assets/buttons/volume.png" />
         <BitmapImage x:Key="noalbum" UriSource="assets/images/noalbum.png"/>
-        <BitmapImage x:Key="vinylimage" UriSource="assets/images/vinyl.png" />
     </Window.Resources>
 
     <Grid>
@@ -142,13 +141,13 @@
             RenderOptions.BitmapScalingMode="HighQuality" 
             RenderOptions.EdgeMode="Aliased" 
             Source="{StaticResource expandlistbutton}" 
-            x:Name="arrowButton" 
+            x:Name="listButton" 
             HorizontalAlignment="Left" 
             Height="65" 
             Margin="9,13,0,0" 
             VerticalAlignment="Top" 
             Width="65" 
-            MouseLeftButtonDown="arrowButton_MouseLeftButtonDown" Grid.Row="1" />
+            MouseLeftButtonDown="listButton_MouseLeftButtonDown" Grid.Row="1" />
         <Image 
             RenderOptions.BitmapScalingMode="HighQuality" 
             RenderOptions.EdgeMode="Aliased" 
@@ -158,18 +157,6 @@
             Width="32" 
             Margin="1106,28,133,30" 
             Grid.Row="1"/>
-        <Image
-            RenderOptions.BitmapScalingMode="HighQuality"
-            RenderOptions.EdgeMode="Aliased"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"
-            Source="{StaticResource vinylimage}"
-            x:Name="vinylImage"
-            Height="289"
-            Width="289"
-            Margin="-289,0,0,0"
-            RenderTransformOrigin=".5,.5" />
-
         <Label 
             x:Name="songTitle"
             FontSize="14"
