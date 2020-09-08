@@ -29,9 +29,10 @@ namespace Clair
     /// </summary>
     public partial class MainWindow : Window
     {
+        Double tempVolume;
         String[] fileNames, filePaths;
-        private bool isMediaPlaying = false;
-        private MediaPlayer mPlayer = new MediaPlayer();
+        bool isMediaPlaying = false;
+        MediaPlayer mPlayer = new MediaPlayer();
         Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
         DispatcherTimer durationTimer = new DispatcherTimer();
         TaskbarIcon taskbarIcon = new TaskbarIcon();
@@ -178,6 +179,8 @@ namespace Clair
                 fileNames = ofd.SafeFileNames;
                 filePaths = ofd.FileNames;
 
+                randomizeSongSelection(fileNames, filePaths);
+
                 for (int i = 0; i < fileNames.Length; i++) {
                     songList.Items.Add(fileNames[i]);
                 }
@@ -232,6 +235,23 @@ namespace Clair
             }
         }
 
+        private void randomizeSongSelection<T>(T[] songNames, T[] songPaths)
+        {
+            Random rand = new Random();
+            for (int i = 0; i < songNames.Length; i++) {
+
+                int j = rand.Next(i, songNames.Length);
+                T tempNames = songNames[i];
+                T tempPaths = songPaths[i];
+                songNames[i] = songNames[j];
+                songPaths[i] = songPaths[j];
+                songNames[j] = tempNames;
+                songPaths[j] = tempPaths;
+            }
+            
+
+        }
+
         private void stopButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (isMediaPlaying)
@@ -248,9 +268,11 @@ namespace Clair
             if (songList.Visibility == Visibility.Hidden)
             {
                 songList.Visibility = Visibility.Visible;
+                listButton.Opacity = 0.5;
             }
             else {
                 songList.Visibility = Visibility.Hidden;
+                listButton.Opacity = 1;
             }
         }
 
@@ -292,6 +314,44 @@ namespace Clair
             TimeSpan t = TimeSpan.FromSeconds(durationSlider.Value);
             string time = t.ToString(@"mm\:ss");
             currentPosition.Text = time;
+        }
+
+        private void shuffleButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (songList.Items.Count > 0)
+            {
+
+                randomizeSongSelection(fileNames, filePaths);
+                songList.Items.Clear();
+
+                for (int i = 0; i < fileNames.Length; i++)
+                {
+
+                    songList.Items.Add(fileNames[i]);
+
+                }
+
+                getAlbumArtFromFile(1, filePaths[0]);
+                getAlbumArtFromFile(2, filePaths[1]);
+
+            }
+        }
+
+        private void volumeImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (mPlayer.Volume != 0.0D) {
+                tempVolume = mPlayer.Volume;
+                volumeSlider.Value = 0.0D;
+                mPlayer.Volume = 0.0D;
+                volumeImage.Opacity = 0.5;
+            }
+            else
+            {
+                mPlayer.Volume = tempVolume;
+                volumeSlider.Value = mPlayer.Volume * 100;
+                volumeImage.Opacity = 1;
+            }
+                
         }
 
         private void nextButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

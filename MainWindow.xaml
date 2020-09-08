@@ -18,6 +18,7 @@
         <BitmapImage x:Key="nextbutton" UriSource="assets/buttons/next.png"/>
         <BitmapImage x:Key="previousbutton" UriSource="assets/buttons/previous.png"/>
         <BitmapImage x:Key="stopbutton" UriSource="assets/buttons/stop.png"/>
+        <BitmapImage x:Key="shufflebutton" UriSource="assets/buttons/shuffle.png"/>
         <BitmapImage x:Key="expandlistbutton" UriSource="assets/buttons/list.png"/>
         <BitmapImage x:Key="volumeimage" UriSource="assets/buttons/volume.png" />
         <BitmapImage x:Key="noalbum" UriSource="assets/images/noalbum.png"/>
@@ -77,7 +78,8 @@
             Grid.Row="1" 
             VerticalAlignment="Top"
             Width="40"
-            MouseLeftButtonDown="playButton_MouseLeftButtonDown"/>
+            MouseLeftButtonDown="playButton_MouseLeftButtonDown"
+            Cursor="Hand"/>
         <Image 
             Visibility="Collapsed"
             RenderOptions.BitmapScalingMode="HighQuality"
@@ -90,7 +92,8 @@
             Grid.Row="1"
             VerticalAlignment="Top" 
             Width="40" 
-            MouseLeftButtonDown="pauseButton_MouseLeftButtonDown"/>
+            MouseLeftButtonDown="pauseButton_MouseLeftButtonDown"
+            Cursor="Hand"/>
         <Image 
             RenderOptions.BitmapScalingMode="HighQuality" 
             RenderOptions.EdgeMode="Aliased" 
@@ -102,7 +105,8 @@
             Grid.Row="1"
             VerticalAlignment="Top"
             Width="32" 
-            MouseLeftButtonDown="previousButton_MouseLeftButtonDown"/>
+            MouseLeftButtonDown="previousButton_MouseLeftButtonDown"
+            Cursor="Hand"/>
         <Image 
             RenderOptions.BitmapScalingMode="HighQuality" 
             RenderOptions.EdgeMode="Aliased" 
@@ -114,7 +118,8 @@
             Grid.Row="1" 
             VerticalAlignment="Top" 
             Width="32" 
-            MouseLeftButtonDown="stopButton_MouseLeftButtonDown"/>
+            MouseLeftButtonDown="stopButton_MouseLeftButtonDown"
+            Cursor="Hand"/>
         <Image 
             RenderOptions.BitmapScalingMode="HighQuality" 
             RenderOptions.EdgeMode="Aliased"
@@ -125,7 +130,8 @@
             Grid.Row="1" 
             VerticalAlignment="Top" 
             Width="32" 
-            MouseLeftButtonDown="nextButton_MouseLeftButtonDown"/>
+            MouseLeftButtonDown="nextButton_MouseLeftButtonDown"
+            Cursor="Hand"/>
         <Image 
             RenderOptions.BitmapScalingMode="HighQuality" 
             RenderOptions.EdgeMode="Aliased" 
@@ -136,7 +142,8 @@
             Grid.Row="1" 
             VerticalAlignment="Top" 
             Width="32" 
-            MouseLeftButtonDown="folderButton_MouseLeftButtonDown"/>
+            MouseLeftButtonDown="folderButton_MouseLeftButtonDown"
+            Cursor="Hand"/>
         <Image 
             RenderOptions.BitmapScalingMode="HighQuality" 
             RenderOptions.EdgeMode="Aliased" 
@@ -147,7 +154,9 @@
             Margin="9,13,0,0" 
             VerticalAlignment="Top" 
             Width="65" 
-            MouseLeftButtonDown="listButton_MouseLeftButtonDown" Grid.Row="1" />
+            MouseLeftButtonDown="listButton_MouseLeftButtonDown" 
+            Grid.Row="1"
+            Cursor="Hand"/>
         <Image 
             RenderOptions.BitmapScalingMode="HighQuality" 
             RenderOptions.EdgeMode="Aliased" 
@@ -156,7 +165,8 @@
             Height="32" 
             Width="32" 
             Margin="1106,28,133,30" 
-            Grid.Row="1"/>
+            Grid.Row="1" MouseLeftButtonDown="volumeImage_MouseLeftButtonDown"
+            Cursor="Hand"/>
         <Label 
             x:Name="songTitle"
             FontSize="14"
@@ -215,5 +225,18 @@
             Grid.Row="1" 
             Text="00:00" 
             VerticalAlignment="Top"/>
+        <Image
+            x:Name="shuffleButton"
+            Source="{StaticResource shufflebutton}"
+            RenderOptions.BitmapScalingMode="HighQuality"
+            RenderOptions.EdgeMode="Aliased"
+            HorizontalAlignment="Left"
+            Height="40"
+            Margin="1068,24,0,0"
+            Grid.Row="1" 
+            VerticalAlignment="Top" 
+            Width="40"
+            MouseLeftButtonDown="shuffleButton_MouseLeftButtonDown"
+            Cursor="Hand"/>
     </Grid>
 </Window>

@@ -138,7 +138,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="assets\buttons\arrow.png" />
     <Resource Include="assets\buttons\folder.png" />
     <Resource Include="assets\buttons\next.png" />
     <Resource Include="assets\buttons\pause.png" />
@@ -170,6 +169,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\buttons\list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\buttons\shuffle.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
