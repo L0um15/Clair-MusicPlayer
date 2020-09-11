@@ -47,20 +47,21 @@ namespace Clair
             this.StateChanged += Window_StateChanged;
             taskbarIcon.TrayLeftMouseDown += taskbar_TrayLeftMouseDown;
             volumeSlider.IsMoveToPointEnabled = true;
+            new SettingsWindow().Show();
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            if (this.WindowState == WindowState.Minimized) {
-                taskbarIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
-                taskbarIcon.ShowBalloonTip(
-                        "I'be Waiting Here.",
-                        "Your workspace is much cleaner now!",
-                        BalloonIcon.None
-                    );
-                taskbarIcon.Visibility = Visibility.Visible;
-                this.ShowInTaskbar = false;
-            }
+            //if (this.WindowState == WindowState.Minimized) {
+            //    taskbarIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
+            //    taskbarIcon.ShowBalloonTip(
+            //            "I'be Waiting Here.",
+            //            "Your workspace is much cleaner now!",
+            //            BalloonIcon.None
+            //        );
+            //    taskbarIcon.Visibility = Visibility.Visible;
+            //    this.ShowInTaskbar = false;
+            //}
         }
 
         private void taskbar_TrayLeftMouseDown(object sender, EventArgs args) {

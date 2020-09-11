@@ -1,0 +1,42 @@
+﻿<Window x:Class="Clair.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Clair"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        Icon="assets/icons/icon.ico"
+        Title="Settings" Height="720" Width="1024">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="110*"/>
+            <ColumnDefinition Width="519*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.Column="1" Fill="#080808"/>
+        <Rectangle Grid.Column="0" Fill="Black"/>
+
+
+        <Label Foreground="#FFF" Background="#040404"
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+               Content="Home" FontSize="14"
+               x:Name="homeButton"
+               HorizontalAlignment="Left" VerticalAlignment="Top"
+               Height="60" Width="178" MouseLeftButtonDown="homeButton_MouseLeftButtonDown"/>
+        <Label Foreground="#FFF" Background="#040404        "
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+               Content="About" FontSize="14"
+               x:Name="aboutButton"
+               HorizontalAlignment="Left" VerticalAlignment="Top"
+               Height="60" Width="178" MouseLeftButtonDown="homeButton_MouseLeftButtonDown" Margin="0,60,0,0"/>
+
+        <Grid Visibility="Visible" Grid.Column="1" Name="homeGrid">
+            <CheckBox Foreground="#FFF" Content="Auto-Shuffle Playlist" Height="auto" Margin="40,81,669,595" />
+        </Grid>
+        <Grid Visibility="Collapsed" Grid.Column="1" Name="aboutGrid">
+
+        </Grid>
+
+
+    </Grid>
+</Window>

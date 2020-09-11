@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="assets/styles/slider.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="assets/styles/listboxitem.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="assets/styles/tooltip.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="assets/styles/checkbox.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
