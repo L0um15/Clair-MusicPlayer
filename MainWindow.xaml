@@ -21,6 +21,7 @@
         <BitmapImage x:Key="shufflebutton" UriSource="assets/buttons/shuffle.png"/>
         <BitmapImage x:Key="expandlistbutton" UriSource="assets/buttons/list.png"/>
         <BitmapImage x:Key="volumeimage" UriSource="assets/buttons/volume.png" />
+        <BitmapImage x:Key="settingsbutton" UriSource="assets/buttons/settings.png" />
         <BitmapImage x:Key="noalbum" UriSource="assets/images/noalbum.png"/>
     </Window.Resources>
 
@@ -238,5 +239,17 @@
             Width="40"
             MouseLeftButtonDown="shuffleButton_MouseLeftButtonDown"
             Cursor="Hand"/>
+        <Image
+            x:Name="settingsButton"
+            Source="{StaticResource settingsbutton}"
+            RenderOptions.BitmapScalingMode="HighQuality"
+            RenderOptions.EdgeMode="Aliased"
+            HorizontalAlignment="Left"
+            Height="40"
+            Margin="1028,24,0,0"
+            Grid.Row="1" 
+            VerticalAlignment="Top" 
+            Width="40"
+            Cursor="Hand" MouseLeftButtonDown="settingsButton_MouseLeftButtonDown"/>
     </Grid>
 </Window>

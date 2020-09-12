@@ -47,7 +47,6 @@ namespace Clair
             this.StateChanged += Window_StateChanged;
             taskbarIcon.TrayLeftMouseDown += taskbar_TrayLeftMouseDown;
             volumeSlider.IsMoveToPointEnabled = true;
-            new SettingsWindow().Show();
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
@@ -353,6 +352,13 @@ namespace Clair
                 volumeImage.Opacity = 1;
             }
                 
+        }
+
+        private void settingsButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            SettingsWindow settingsWindow = new SettingsWindow();
+            settingsWindow.Show();
+            settingsWindow.Activate();
         }
 
         private void nextButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -184,5 +184,8 @@
   <ItemGroup>
     <Resource Include="assets\buttons\shuffle.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\buttons\settings.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
