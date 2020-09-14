@@ -182,7 +182,7 @@ namespace Clair
                 randomizeSongSelection(fileNames, filePaths);
 
                 for (int i = 0; i < fileNames.Length; i++) {
-                    songList.Items.Add(fileNames[i]);
+                    songList.Items.Add(System.IO.Path.GetFileNameWithoutExtension(fileNames[i]));
                 }
 
                 songList.SelectedIndex = 0;
@@ -327,7 +327,7 @@ namespace Clair
                 for (int i = 0; i < fileNames.Length; i++)
                 {
 
-                    songList.Items.Add(fileNames[i]);
+                    songList.Items.Add(System.IO.Path.GetFileNameWithoutExtension(fileNames[i]));
 
                 }
 
