@@ -22,5 +22,29 @@ namespace Clair.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int volumelevel {
+            get {
+                return ((int)(this["volumelevel"]));
+            }
+            set {
+                this["volumelevel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool isAutoShuffleEnabled {
+            get {
+                return ((bool)(this["isAutoShuffleEnabled"]));
+            }
+            set {
+                this["isAutoShuffleEnabled"] = value;
+            }
+        }
     }
 }

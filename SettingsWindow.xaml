@@ -23,24 +23,38 @@
                Content="Home" FontSize="14"
                x:Name="homeButton"
                HorizontalAlignment="Left" VerticalAlignment="Top"
+               Cursor="Hand"
                Height="60" Width="178" MouseLeftButtonDown="homeButton_MouseLeftButtonDown"/>
         <Label Foreground="#FFF" Background="#040404        "
                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                Content="About" FontSize="14"
                x:Name="aboutButton"
                HorizontalAlignment="Left" VerticalAlignment="Top"
-               Height="60" Width="178" MouseLeftButtonDown="homeButton_MouseLeftButtonDown" Margin="0,60,0,0"/>
+               Cursor="Hand"
+               Height="60" Width="178" MouseLeftButtonDown="aboutButton_MouseLeftButtonDown" Margin="0,60,0,0"/>
 
-        <Grid Visibility="Collapsed" Grid.Column="1" Name="homeGrid">
-            <CheckBox Foreground="#FFF" Content="Auto-Shuffle Playlist" Margin="50,50,645,611" />
-            <CheckBox Foreground="#FFF" Content="Enable Unsupported extensions" Margin="50,85,586,576" />
+        <Grid Visibility="Visible" Grid.Column="1" Name="homeGrid">
+            <CheckBox x:Name="autoShuffleCheckbox"
+                      Foreground="#FFF" Content="Auto-Shuffle Playlist"
+                      Margin="50,50,645,611" Checked="autoShuffleCheckbox_Checked" 
+                      Unchecked="autoShuffleCheckbox_Unchecked" />
+            <CheckBox x:Name="enableExtensionsCheckbox" 
+                      Foreground="#FFF" Content="Enable Unsupported extensions" 
+                      Margin="50,85,586,576" />
         </Grid>
-        <Grid Visibility="Visible" Grid.Column="1" Name="aboutGrid">
+        <Grid Visibility="Collapsed" Grid.Column="1" Name="aboutGrid">
             <TextBlock Foreground="#FFF" FontSize="24" Text="About" Height="32" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"/>
             <TextBlock Foreground="#FFF" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,100,50,0">
                 Author: L0um15 <LineBreak />
                 Project Version: pre-5.0 <LineBreak />
-                Project Website: <Hyperlink Foreground="#eb345f" RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/L0um15/Clair-Musicplayer/">Clair Musicplayer Home Website</Hyperlink> 
+                Project Website: <Hyperlink 
+                    Foreground="#eb345f" RequestNavigate="Hyperlink_RequestNavigate" 
+                    NavigateUri="https://github.com/L0um15/Clair-Musicplayer/">
+                    Clair Musicplayer Home Website
+                </Hyperlink> 
+                
+                
+                
             </TextBlock>
         </Grid>
 

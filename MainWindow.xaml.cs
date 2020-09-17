@@ -1,4 +1,5 @@
-﻿using Hardcodet.Wpf.TaskbarNotification;
+﻿using Clair.Properties;
+using Hardcodet.Wpf.TaskbarNotification;
 using Hardcodet.Wpf.TaskbarNotification.Interop;
 using Microsoft.Win32;
 using System;
@@ -40,27 +41,35 @@ namespace Clair
         public MainWindow()
         {
             InitializeComponent();
+
+            //Bind Events
             mPlayer.MediaEnded += mPlayer_MediaEnded;
             mPlayer.MediaOpened += mPlayer_MediaOpened;
             durationTimer.Tick += dispatcherTimer_Tick;
-            durationTimer.Interval = new TimeSpan(0, 0, 1);
-            this.StateChanged += Window_StateChanged;
             taskbarIcon.TrayLeftMouseDown += taskbar_TrayLeftMouseDown;
+            this.StateChanged += Window_StateChanged;
+
+            durationTimer.Interval = new TimeSpan(0, 0, 1);
+            
             volumeSlider.IsMoveToPointEnabled = true;
+
+            //Set value from user settings.
+            volumeSlider.Value = (double) Settings.Default.volumelevel;
+
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            //if (this.WindowState == WindowState.Minimized) {
-            //    taskbarIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
-            //    taskbarIcon.ShowBalloonTip(
-            //            "I'be Waiting Here.",
-            //            "Your workspace is much cleaner now!",
-            //            BalloonIcon.None
-            //        );
-            //    taskbarIcon.Visibility = Visibility.Visible;
-            //    this.ShowInTaskbar = false;
-            //}
+            if (this.WindowState == WindowState.Minimized) {
+                taskbarIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
+                taskbarIcon.ShowBalloonTip(
+                        "I'be Waiting Here.",
+                        "Your workspace is much cleaner now!",
+                        BalloonIcon.None
+                    );
+                taskbarIcon.Visibility = Visibility.Visible;
+                this.ShowInTaskbar = false;
+            }
         }
 
         private void taskbar_TrayLeftMouseDown(object sender, EventArgs args) {
@@ -178,8 +187,9 @@ namespace Clair
 
                 fileNames = ofd.SafeFileNames;
                 filePaths = ofd.FileNames;
-
-                randomizeSongSelection(fileNames, filePaths);
+                
+                if(Settings.Default.isAutoShuffleEnabled == true)
+                    randomizeSongSelection(fileNames, filePaths);
 
                 for (int i = 0; i < fileNames.Length; i++) {
                     songList.Items.Add(System.IO.Path.GetFileNameWithoutExtension(fileNames[i]));
@@ -290,6 +300,9 @@ namespace Clair
         private void volumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             mPlayer.Volume = (double)volumeSlider.Value / 100;
+            Settings.Default.volumelevel = (int)volumeSlider.Value;
+            Settings.Default.Save();
+            Settings.Default.Reload();
         }
 
         private void durationSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
