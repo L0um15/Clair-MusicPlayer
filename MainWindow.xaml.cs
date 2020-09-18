@@ -178,6 +178,8 @@ namespace Clair
 
             ofd.Multiselect = true;
 
+            ofd.Filter = "Music files (*.mp3) | *.mp3";
+
             if (ofd.ShowDialog() == true)
             {
 
