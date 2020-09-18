@@ -30,6 +30,8 @@ namespace Clair
 
             autoShuffleCheckbox.IsChecked = Settings.Default.isAutoShuffleEnabled;
 
+            enableExtensionsCheckbox.IsChecked = Settings.Default.isUnsupportedExtensionsEnabled;
+
         }
 
         private void homeButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -71,6 +73,26 @@ namespace Clair
             if (Settings.Default.isAutoShuffleEnabled == true)
             {
                 Settings.Default.isAutoShuffleEnabled = false;
+                Settings.Default.Save();
+
+            }
+        }
+
+        private void enableExtensionsCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (Settings.Default.isUnsupportedExtensionsEnabled == false)
+            {
+                Settings.Default.isUnsupportedExtensionsEnabled = true;
+                Settings.Default.Save();
+
+            }
+        }
+
+        private void enableExtensionsCheckbox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (Settings.Default.isUnsupportedExtensionsEnabled == true)
+            {
+                Settings.Default.isUnsupportedExtensionsEnabled = false;
                 Settings.Default.Save();
 
             }

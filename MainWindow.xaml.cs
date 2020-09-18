@@ -178,7 +178,10 @@ namespace Clair
 
             ofd.Multiselect = true;
 
-            ofd.Filter = "Music files (*.mp3) | *.mp3";
+            if (!Settings.Default.isUnsupportedExtensionsEnabled)
+                ofd.Filter = "Music files (*.mp3) | *.mp3";
+            else
+                ofd.Filter = "All files (*.*) | *.*";
 
             if (ofd.ShowDialog() == true)
             {

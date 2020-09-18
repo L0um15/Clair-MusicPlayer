@@ -40,7 +40,7 @@
                       Unchecked="autoShuffleCheckbox_Unchecked" />
             <CheckBox x:Name="enableExtensionsCheckbox" 
                       Foreground="#FFF" Content="Enable Unsupported extensions" 
-                      Margin="50,85,586,576" />
+                      Margin="50,85,586,576" Checked="enableExtensionsCheckbox_Checked" Unchecked="enableExtensionsCheckbox_Unchecked" />
         </Grid>
         <Grid Visibility="Collapsed" Grid.Column="1" Name="aboutGrid">
             <TextBlock Foreground="#FFF" FontSize="24" Text="About" Height="32" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"/>

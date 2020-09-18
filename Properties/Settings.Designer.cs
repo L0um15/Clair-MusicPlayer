@@ -46,5 +46,17 @@ namespace Clair.Properties {
                 this["isAutoShuffleEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool isUnsupportedExtensionsEnabled {
+            get {
+                return ((bool)(this["isUnsupportedExtensionsEnabled"]));
+            }
+            set {
+                this["isUnsupportedExtensionsEnabled"] = value;
+            }
+        }
     }
 }
