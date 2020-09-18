@@ -38,6 +38,7 @@ namespace Clair
         DispatcherTimer durationTimer = new DispatcherTimer();
         TaskbarIcon taskbarIcon = new TaskbarIcon();
 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -283,10 +284,12 @@ namespace Clair
             if (songList.Visibility == Visibility.Hidden)
             {
                 songList.Visibility = Visibility.Visible;
+                searchBar.Visibility = Visibility.Visible;
                 listButton.Opacity = 0.5;
             }
             else {
                 songList.Visibility = Visibility.Hidden;
+                searchBar.Visibility = Visibility.Hidden;
                 listButton.Opacity = 1;
             }
         }
@@ -385,5 +388,12 @@ namespace Clair
                 songList.SelectedIndex += 1;
             }
         }
+
+        private void searchBar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+        }
+
+
     }
 }

@@ -63,11 +63,32 @@
             BorderThickness="0"
             Background="#080808"
             HorizontalAlignment="Left"
-            Height="599"
+            Height="574"
+            Margin="0,25,0,0"
             VerticalAlignment="Top"   
             Width="323" 
             SelectionChanged="songList_SelectionChanged"
             Visibility="Hidden"/>
+        <ListBox 
+            Foreground="#FFF" 
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            x:Name="songListFiltered"
+            BorderThickness="0"
+            Background="#080808"
+            HorizontalAlignment="Left"
+            Height="574"
+            Margin="0,25,0,0"
+            VerticalAlignment="Top"   
+            Width="323" 
+            Visibility="Hidden"/>
+        <TextBox x:Name="searchBar" 
+                 HorizontalAlignment="Left" 
+                 Height="25" 
+                 Style="{StaticResource searchboxStyle}"
+                 VerticalAlignment="Top" 
+                 Width="323" 
+                 TextChanged="searchBar_TextChanged"
+                 Visibility="Hidden"/>
         <Image 
             RenderOptions.BitmapScalingMode="HighQuality"
             RenderOptions.EdgeMode="Aliased"
