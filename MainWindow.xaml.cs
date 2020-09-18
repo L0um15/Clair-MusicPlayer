@@ -189,6 +189,7 @@ namespace Clair
 
                 if (songList.Items.Count > 0) {
                     songList.Items.Clear();
+                    songListFiltered.Items.Clear();
                 }
 
                 fileNames = ofd.SafeFileNames;
@@ -284,12 +285,13 @@ namespace Clair
             if (songList.Visibility == Visibility.Hidden)
             {
                 songList.Visibility = Visibility.Visible;
-                searchBar.Visibility = Visibility.Visible;
+                searchBox.Visibility = Visibility.Visible;
                 listButton.Opacity = 0.5;
             }
             else {
                 songList.Visibility = Visibility.Hidden;
-                searchBar.Visibility = Visibility.Hidden;
+                songListFiltered.Visibility = Visibility.Hidden;
+                searchBox.Visibility = Visibility.Hidden;
                 listButton.Opacity = 1;
             }
         }
@@ -389,9 +391,36 @@ namespace Clair
             }
         }
 
-        private void searchBar_TextChanged(object sender, TextChangedEventArgs e)
+        private void songListFiltered_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            songList.SelectedItem = songListFiltered.SelectedItem;
+        }
+
+        private void searchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(string.IsNullOrEmpty(searchBox.Text) == false)
+            {
+
+                if (songListFiltered.Visibility == Visibility.Hidden) {
+                    songListFiltered.Visibility = Visibility.Visible;
+                }
+
+                songListFiltered.Items.Clear();
+                foreach(string item in songList.Items)
+                {
+                    if (item.IndexOf(searchBox.Text, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                    {
+                        songListFiltered.Items.Add(item);
+                    }
+                }
+
+            }else if(searchBox.Text == "")
+            {
+                if (songListFiltered.Visibility == Visibility.Visible)
+                {
+                    songListFiltered.Visibility = Visibility.Hidden;
+                }
+            }
         }
 
 

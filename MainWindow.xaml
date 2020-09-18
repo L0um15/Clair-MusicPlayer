@@ -80,14 +80,14 @@
             Margin="0,25,0,0"
             VerticalAlignment="Top"   
             Width="323" 
-            Visibility="Hidden"/>
-        <TextBox x:Name="searchBar" 
+            Visibility="Hidden" SelectionChanged="songListFiltered_SelectionChanged"/>
+        <TextBox x:Name="searchBox" 
                  HorizontalAlignment="Left" 
                  Height="25" 
                  Style="{StaticResource searchboxStyle}"
                  VerticalAlignment="Top" 
                  Width="323" 
-                 TextChanged="searchBar_TextChanged"
+                 TextChanged="searchBox_TextChanged"
                  Visibility="Hidden"/>
         <Image 
             RenderOptions.BitmapScalingMode="HighQuality"
