@@ -118,9 +118,16 @@ namespace Clair
         private void getArtistTagFromFile(String path) {
             TagLib.File file = TagLib.File.Create(path);
 
-            songTitle.Content = file.Tag.Title;
-
-            artistTitle.Content = file.Tag.Artists[0];
+            if (file.Tag.Title != null)
+            {
+                songTitle.Content = file.Tag.Title;
+                artistTitle.Content = file.Tag.Artists[0];
+            }
+            else {
+                songTitle.Content = songList.Items[songList.SelectedIndex];
+                artistTitle.Content = null;
+            }
+            
         }
 
 
@@ -133,14 +140,12 @@ namespace Clair
             if (picture != null)
             {
                 MemoryStream memory = new MemoryStream(picture.Data.Data);
-
                 memory.Seek(0, SeekOrigin.Begin);
                 
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.StreamSource = memory;
                 bitmap.EndInit();
-
                 if (index == 0)
                     albumArtImage.Source = bitmap;
                 else if (index == 1)
