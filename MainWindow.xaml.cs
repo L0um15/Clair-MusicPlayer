@@ -49,6 +49,7 @@ namespace Clair
             durationTimer.Tick += dispatcherTimer_Tick;
             taskbarIcon.TrayLeftMouseDown += taskbar_TrayLeftMouseDown;
             this.StateChanged += Window_StateChanged;
+            this.KeyDown += OnKeyPress;
 
             durationTimer.Interval = new TimeSpan(0, 0, 1);
             
@@ -286,6 +287,7 @@ namespace Clair
             {
                 songList.Visibility = Visibility.Visible;
                 searchBox.Visibility = Visibility.Visible;
+                searchBox.Focus();
                 listButton.Opacity = 0.5;
             }
             else {
@@ -423,6 +425,28 @@ namespace Clair
             }
         }
 
+        private void OnKeyPress(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Space:
+                    if (!isMediaPlaying)
+                    {
+                        mPlayer.Play();
+                        playButton.Visibility = Visibility.Hidden;
+                        pauseButton.Visibility = Visibility.Visible;
+                        isMediaPlaying = true;
+                    }
+                    else
+                    {
+                        mPlayer.Pause();
+                        playButton.Visibility = Visibility.Visible;
+                        pauseButton.Visibility = Visibility.Hidden;
+                        isMediaPlaying = false;
+                    }
+                    break;
+            }
+        }
 
     }
 }
