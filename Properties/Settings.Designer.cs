@@ -58,5 +58,17 @@ namespace Clair.Properties {
                 this["isUnsupportedExtensionsEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("nopath")]
+        public string lastKnownDirectory {
+            get {
+                return ((string)(this["lastKnownDirectory"]));
+            }
+            set {
+                this["lastKnownDirectory"] = value;
+            }
+        }
     }
 }

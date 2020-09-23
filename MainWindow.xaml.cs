@@ -31,7 +31,7 @@ namespace Clair
     public partial class MainWindow : Window
     {
         Double tempVolume;
-        String[] fileNames, filePaths;
+        String[] filePaths;
         bool isMediaPlaying = false;
         MediaPlayer mPlayer = new MediaPlayer();
         Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
@@ -49,14 +49,34 @@ namespace Clair
             durationTimer.Tick += dispatcherTimer_Tick;
             taskbarIcon.TrayLeftMouseDown += taskbar_TrayLeftMouseDown;
             this.StateChanged += Window_StateChanged;
-            this.KeyDown += OnKeyPress;
+            this.KeyDown += Window_OnKeyPressed;
 
             durationTimer.Interval = new TimeSpan(0, 0, 1);
             
             volumeSlider.IsMoveToPointEnabled = true;
 
-            //Set value from user settings.
+            //Set values from user settings.
             volumeSlider.Value = (double) Settings.Default.volumelevel;
+            if (Settings.Default.lastKnownDirectory != "nopath")
+            {
+
+                filePaths = Directory.GetFiles(Settings.Default.lastKnownDirectory, "*.mp3");
+
+                if (Settings.Default.isAutoShuffleEnabled)
+                    randomizeSongSelection(filePaths);
+
+                for (int i = 0; i < filePaths.Length; i++)
+                {
+                    songList.Items.Add(System.IO.Path.GetFileNameWithoutExtension(filePaths[i]));
+                }
+
+                songList.SelectedIndex = 0;
+                playButton.Visibility = Visibility.Visible;
+                pauseButton.Visibility = Visibility.Hidden;
+                isMediaPlaying = false;
+                mPlayer.Pause();
+
+            }
 
         }
 
@@ -198,15 +218,17 @@ namespace Clair
                     songListFiltered.Items.Clear();
                 }
 
-                fileNames = ofd.SafeFileNames;
                 filePaths = ofd.FileNames;
                 
                 if(Settings.Default.isAutoShuffleEnabled == true)
-                    randomizeSongSelection(fileNames, filePaths);
+                    randomizeSongSelection(filePaths);
 
-                for (int i = 0; i < fileNames.Length; i++) {
-                    songList.Items.Add(System.IO.Path.GetFileNameWithoutExtension(fileNames[i]));
+                for (int i = 0; i < filePaths.Length; i++) {
+                    songList.Items.Add(System.IO.Path.GetFileNameWithoutExtension(filePaths[i]));
                 }
+
+                Settings.Default.lastKnownDirectory = System.IO.Path.GetDirectoryName(filePaths[0]);
+                Settings.Default.Save();
 
                 songList.SelectedIndex = 0;
 
@@ -258,17 +280,14 @@ namespace Clair
             }
         }
 
-        private void randomizeSongSelection<T>(T[] songNames, T[] songPaths)
+        private void randomizeSongSelection<T>( T[] songPaths)
         {
             Random rand = new Random();
-            for (int i = 0; i < songNames.Length; i++) {
+            for (int i = 0; i < songPaths.Length; i++) {
 
-                int j = rand.Next(i, songNames.Length);
-                T tempNames = songNames[i];
+                int j = rand.Next(i, songPaths.Length);
                 T tempPaths = songPaths[i];
-                songNames[i] = songNames[j];
                 songPaths[i] = songPaths[j];
-                songNames[j] = tempNames;
                 songPaths[j] = tempPaths;
             }
             
@@ -351,13 +370,13 @@ namespace Clair
             if (songList.Items.Count > 0)
             {
 
-                randomizeSongSelection(fileNames, filePaths);
+                randomizeSongSelection(filePaths);
                 songList.Items.Clear();
 
-                for (int i = 0; i < fileNames.Length; i++)
+                for (int i = 0; i < filePaths.Length; i++)
                 {
 
-                    songList.Items.Add(System.IO.Path.GetFileNameWithoutExtension(fileNames[i]));
+                    songList.Items.Add(System.IO.Path.GetFileNameWithoutExtension(filePaths[i]));
 
                 }
 
@@ -430,7 +449,7 @@ namespace Clair
             }
         }
 
-        private void OnKeyPress(object sender, System.Windows.Input.KeyEventArgs e)
+        private void Window_OnKeyPressed(object sender, System.Windows.Input.KeyEventArgs e)
         {
             switch (e.Key)
             {
