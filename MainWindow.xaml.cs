@@ -4,9 +4,12 @@ using Hardcodet.Wpf.TaskbarNotification.Interop;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +32,7 @@ namespace Clair
     {
 
         // Global Variables
+        String version = "pre-5.0";
         Double tempVolume;
         String[] filePaths;
         bool isMediaPlaying = false;
@@ -52,6 +56,8 @@ namespace Clair
 
             durationTimer.Interval = new TimeSpan(0, 0, 1);
             volumeSlider.IsMoveToPointEnabled = true;
+
+            checkVersion();
 
             // User Settings
 
@@ -77,6 +83,31 @@ namespace Clair
                 mPlayer.Pause();
 
             }
+
+        }
+
+        private void checkVersion()
+        {
+            try
+            {
+                string ver = new WebClient().DownloadString("https://raw.githubusercontent.com/L0um15/Clair-MusicPlayer/feature_UpdateNotifier/version.txt");
+                if (ver != version)
+                {
+                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Shall i open Github Page?", "New Version Available!", MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        Process.Start(new ProcessStartInfo("https://github.com/L0um15/Clair-MusicPlayer"));
+                        this.Close();
+                    }
+
+                }
+            }
+            catch (WebException)
+            {
+                System.Windows.MessageBox.Show("No Internet Connection", "Unable to fetch updates", MessageBoxButton.OK);
+            }
+            
+                
 
         }
 
