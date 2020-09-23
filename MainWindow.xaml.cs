@@ -25,11 +25,10 @@ using System.Windows.Threading;
 
 namespace Clair
 {
-    /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+
+        // Global Variables
         Double tempVolume;
         String[] filePaths;
         bool isMediaPlaying = false;
@@ -43,7 +42,7 @@ namespace Clair
         {
             InitializeComponent();
 
-            //Bind Events
+            // Bind Events
             mPlayer.MediaEnded += mPlayer_MediaEnded;
             mPlayer.MediaOpened += mPlayer_MediaOpened;
             durationTimer.Tick += dispatcherTimer_Tick;
@@ -52,11 +51,12 @@ namespace Clair
             this.KeyDown += Window_OnKeyPressed;
 
             durationTimer.Interval = new TimeSpan(0, 0, 1);
-            
             volumeSlider.IsMoveToPointEnabled = true;
 
-            //Set values from user settings.
+            // User Settings
+
             volumeSlider.Value = (double) Settings.Default.volumelevel;
+
             if (Settings.Default.lastKnownDirectory != "nopath")
             {
 
@@ -82,6 +82,9 @@ namespace Clair
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
+
+            // Minimizes to taskbar
+
             if (this.WindowState == WindowState.Minimized) {
                 taskbarIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
                 taskbarIcon.ShowBalloonTip(
@@ -95,6 +98,9 @@ namespace Clair
         }
 
         private void taskbar_TrayLeftMouseDown(object sender, EventArgs args) {
+
+            // Reveals from taskbar
+
             if (this.WindowState == WindowState.Minimized) {
                 this.WindowState = WindowState.Normal;
                 this.Activate();
@@ -104,6 +110,9 @@ namespace Clair
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs args) {
+
+            // Changes Value of durationSlider
+
             if (isMediaPlaying)
             {
                 durationSlider.Value = (int) mPlayer.Position.TotalSeconds;
@@ -111,6 +120,9 @@ namespace Clair
         }
 
         private void mPlayer_MediaOpened(object sender, EventArgs args) {
+
+            // Calls when mPlayer loads file
+
             double duration = mPlayer.NaturalDuration.TimeSpan.TotalSeconds;
             durationSlider.Maximum = (int)duration;
             durationSlider.IsMoveToPointEnabled = true;
@@ -122,12 +134,17 @@ namespace Clair
 
         private void mPlayer_MediaEnded(object sender, EventArgs args) {
 
+            // Moves to next track if available
+
             if (songList.SelectedIndex < songList.Items.Count - 1)
             {
                 songList.SelectedIndex += 1;
             }
             else
             {
+
+                // Hides pause button when there is no more tracks in queue
+
                 playButton.Visibility = Visibility.Visible;
                 pauseButton.Visibility = Visibility.Hidden;
                 isMediaPlaying = false;
@@ -136,6 +153,9 @@ namespace Clair
         }
 
         private void getArtistTagFromFile(String path) {
+
+            // Get Artist and Title if available ...
+
             TagLib.File file = TagLib.File.Create(path);
 
             if (file.Tag.Title != null)
@@ -144,6 +164,9 @@ namespace Clair
                 artistTitle.Content = file.Tag.Artists[0];
             }
             else {
+
+                // ... or set filename as Title
+
                 songTitle.Content = songList.Items[songList.SelectedIndex];
                 artistTitle.Content = null;
             }
@@ -153,9 +176,16 @@ namespace Clair
 
         private void getAlbumArtFromFile(int index,String path) {
 
+            // Get Album cover if available
+
             TagLib.File file = TagLib.File.Create(path);
 
             var picture = file.Tag.Pictures.FirstOrDefault();
+
+            /*
+             * Other files than mp3 will return blank album cover
+             * TODO: Fix black album cover
+             */
 
             if (picture != null)
             {
@@ -174,11 +204,6 @@ namespace Clair
                     albumArtImage3.Source = bitmap;
             }
             else {
-                /*
-                 * If music file does not contain album art, set "noalbum.jpg as its cover".
-                 * Index starts from 0.
-                 */
-
 
                 if (index == 0)
                     albumArtImage.Source = new BitmapImage(new Uri("assets/images/noalbum.jpg", UriKind.RelativeOrAbsolute));
@@ -186,14 +211,13 @@ namespace Clair
                     albumArtImage2.Source = new BitmapImage(new Uri("assets/images/noalbum.jpg", UriKind.RelativeOrAbsolute));
                 else if (index == 2)
                     albumArtImage3.Source = new BitmapImage(new Uri("assets/images/noalbum.jpg", UriKind.RelativeOrAbsolute));
-
             }
         }
 
         private void playButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            mPlayer.Play();
             if (!isMediaPlaying) {
+                mPlayer.Play();
                 playButton.Visibility = Visibility.Hidden;
                 pauseButton.Visibility = Visibility.Visible;
                 isMediaPlaying = true;
@@ -202,9 +226,11 @@ namespace Clair
 
         private void folderButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
+            // Enables multiple selection
             ofd.Multiselect = true;
 
+
+            // Shows only supported files when disabled
             if (!Settings.Default.isUnsupportedExtensionsEnabled)
                 ofd.Filter = "Music files (*.mp3) | *.mp3";
             else
@@ -212,24 +238,29 @@ namespace Clair
 
             if (ofd.ShowDialog() == true)
             {
-
+                // Clears songList before adding to prevent duplication
                 if (songList.Items.Count > 0) {
                     songList.Items.Clear();
                     songListFiltered.Items.Clear();
                 }
-
+                // Adds file paths to array
                 filePaths = ofd.FileNames;
                 
+
+                // Randomizes if enabled
                 if(Settings.Default.isAutoShuffleEnabled == true)
                     randomizeSongSelection(filePaths);
 
+                // Converts file paths to normal ones
                 for (int i = 0; i < filePaths.Length; i++) {
                     songList.Items.Add(System.IO.Path.GetFileNameWithoutExtension(filePaths[i]));
                 }
 
+                // Saves location for auto open feature
                 Settings.Default.lastKnownDirectory = System.IO.Path.GetDirectoryName(filePaths[0]);
                 Settings.Default.Save();
 
+                // Calls SelectionChanged Event
                 songList.SelectedIndex = 0;
 
             }
@@ -237,32 +268,41 @@ namespace Clair
 
         private void songList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+            /*
+             * Whole Musicplayer works with this event
+             * Here every track gets processed and played
+             * Every time when selection is changed, new track will be loaded ...
+             * ... with equal index as position in filePaths array
+             */
+
             try
             {
+                // Gets FILE PATH from filePaths and open it
                 mPlayer.Open(new Uri(filePaths[songList.SelectedIndex]));
-                
+
+                // Gets Metadata from file
                 getArtistTagFromFile(filePaths[songList.SelectedIndex]);
                 getAlbumArtFromFile(0,filePaths[songList.SelectedIndex]);
 
-                /*
-                 * Those lines calls getAlbumArtFromFile(String path) method.     
-                 * Else statement sets "noalbum.png" as album art IF there is no more queued songs.
-                 */
-
+                // Sets Album Cover for secondary ImageBox
                 if (songList.SelectedIndex + 1 < songList.Items.Count)
                     getAlbumArtFromFile(1, filePaths[songList.SelectedIndex + 1]);
                 else
                     albumArtImage2.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
+                // Sets Album Cover for third ImageBox
                 if (songList.SelectedIndex + 2 < songList.Items.Count)
                     getAlbumArtFromFile(2, filePaths[songList.SelectedIndex + 2]);
                 else
                     albumArtImage3.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
             }
             catch (IndexOutOfRangeException) { 
-                //Ignore this...
-                //SetSelected Method from WinForms uses try/catch to ignore IndexOutOfRangeException.
+                /*
+                 * WinForms have SetSelected() method which uses try/catch for IndexOutOfRangeException
+                 * After inspection of Listbox class i found out that catch field was blank
+                 * So this field is ignored by me.
+                 */
             }
-            
             mPlayer.Play();
             if (!isMediaPlaying)
             {
@@ -282,6 +322,9 @@ namespace Clair
 
         private void randomizeSongSelection<T>( T[] songPaths)
         {
+
+            // Custom Randomize method
+
             Random rand = new Random();
             for (int i = 0; i < songPaths.Length; i++) {
 
@@ -307,6 +350,9 @@ namespace Clair
 
         private void listButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+
+            // Hide / Reveal songList and focus searchBox for input
+
             if (songList.Visibility == Visibility.Hidden)
             {
                 songList.Visibility = Visibility.Visible;
@@ -335,6 +381,11 @@ namespace Clair
 
         private void volumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+
+            /*
+             * Sets and saves value from volumeSlider to be used after closing application
+             */
+
             mPlayer.Volume = (double)volumeSlider.Value / 100;
             Settings.Default.volumelevel = (int)volumeSlider.Value;
             Settings.Default.Save();
@@ -343,16 +394,25 @@ namespace Clair
 
         private void durationSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+
+            // Sets player position when Left Mouse button is released
+
             mPlayer.Position = TimeSpan.FromSeconds((double)durationSlider.Value);
         }
 
         private void durationSlider_DragCompleted(object sender, EventArgs e) {
+
+            // Sets player position when drag is completed
+
             mPlayer.Position = TimeSpan.FromSeconds((double)durationSlider.Value);
             if(!durationTimer.IsEnabled)
                 durationTimer.Start();
         }
         
         private void durationSlider_DragStarted(object sender, EventArgs e) {
+
+            // Stop durationTimer to prevent changing value when dragging
+
             if (durationTimer.IsEnabled) {
                 durationTimer.Stop();
             } 
@@ -360,6 +420,13 @@ namespace Clair
 
         private void durationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+
+            /*
+             * Set currentPosition.text every time when value is changed
+             * Cant use this event instead of LeftMouseButtonUp event ...
+             * ... because of the durationTimer
+             */
+
             TimeSpan t = TimeSpan.FromSeconds(durationSlider.Value);
             string time = t.ToString(@"mm\:ss");
             currentPosition.Text = time;
@@ -367,9 +434,11 @@ namespace Clair
 
         private void shuffleButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+
+            // Randomize array, clear list and put randomized array back to list
+
             if (songList.Items.Count > 0)
             {
-
                 randomizeSongSelection(filePaths);
                 songList.Items.Clear();
 
@@ -388,6 +457,7 @@ namespace Clair
 
         private void volumeImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+
             if (mPlayer.Volume != 0.0D) {
                 tempVolume = mPlayer.Volume;
                 volumeSlider.Value = 0.0D;
@@ -405,6 +475,8 @@ namespace Clair
 
         private void settingsButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            // Open SettingsWindow form
+
             SettingsWindow settingsWindow = new SettingsWindow();
             settingsWindow.Show();
             settingsWindow.Activate();
@@ -419,11 +491,21 @@ namespace Clair
 
         private void songListFiltered_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            /*
+             * This time instead of SelectionIndex i used SelectedItem
+             * This makes sure that track from songListFiltered is equal to the songList one
+             */
             songList.SelectedItem = songListFiltered.SelectedItem;
         }
 
         private void searchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            /*
+             * Hide songList and Reveal songListFiltered
+             * Every Time when key is pressed this event is called
+             * Adds matches to songListFiltered
+             * Erase searchBox for songList reveal
+             */
             if(string.IsNullOrEmpty(searchBox.Text) == false)
             {
 
@@ -451,6 +533,12 @@ namespace Clair
 
         private void Window_OnKeyPressed(object sender, System.Windows.Input.KeyEventArgs e)
         {
+
+            /*
+             * When searchBox is not focused then this event is being called ...
+             * ... every time when key is pressed.
+             */
+
             switch (e.Key)
             {
                 case Key.Space:

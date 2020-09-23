@@ -17,9 +17,6 @@ using Clair.Properties;
 
 namespace Clair
 {
-    /// <summary>
-    /// Logika interakcji dla klasy SettingsWindow.xaml
-    /// </summary>
     public partial class SettingsWindow : Window
     {
 
@@ -27,6 +24,8 @@ namespace Clair
         public SettingsWindow()
         {
             InitializeComponent();
+
+            // Sets checkbox to match user settings.
 
             autoShuffleCheckbox.IsChecked = Settings.Default.isAutoShuffleEnabled;
 
@@ -36,6 +35,7 @@ namespace Clair
 
         private void homeButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+
             if(homeGrid.Visibility != Visibility.Visible)
             {
                 homeGrid.Visibility = Visibility.Visible;
@@ -45,6 +45,7 @@ namespace Clair
 
         private void aboutButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+
             if (aboutGrid.Visibility != Visibility.Visible)
             {
                 aboutGrid.Visibility = Visibility.Visible;
@@ -54,12 +55,17 @@ namespace Clair
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
+
+            // Opens Webpage 
+
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
         }
 
         private void autoShuffleCheckbox_Checked(object sender, RoutedEventArgs e)
         {
+
+
             if(Settings.Default.isAutoShuffleEnabled == false)
             {
                 Settings.Default.isAutoShuffleEnabled = true;
@@ -70,6 +76,7 @@ namespace Clair
 
         private void autoShuffleCheckbox_Unchecked(object sender, RoutedEventArgs e)
         {
+
             if (Settings.Default.isAutoShuffleEnabled == true)
             {
                 Settings.Default.isAutoShuffleEnabled = false;
