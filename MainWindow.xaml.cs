@@ -102,9 +102,35 @@ namespace Clair
 
                 }
             }
-            catch (WebException)
+            catch (WebException e)
             {
-                System.Windows.MessageBox.Show("No Internet Connection", "Unable to fetch updates", MessageBoxButton.OK);
+                switch (e.Status)
+                {
+                    case WebExceptionStatus.Timeout:
+                        System.Windows.MessageBox.Show("Connection Timeout.", "Unable to fetch updates", MessageBoxButton.OK);
+                        break;
+                    case WebExceptionStatus.ProtocolError:
+                        System.Windows.MessageBox.Show("ProtocolError", "Unable to fetch updates", MessageBoxButton.OK);
+                        break;
+                    case WebExceptionStatus.RequestCanceled:
+                        System.Windows.MessageBox.Show("Request Canceled", "Unable to fetch updates", MessageBoxButton.OK);
+                        break;
+                    case WebExceptionStatus.UnknownError:
+                        System.Windows.MessageBox.Show("Unknown Error", "Unable to fetch updates", MessageBoxButton.OK);
+                        break;
+                    case WebExceptionStatus.ConnectFailure:
+                        System.Windows.MessageBox.Show("Connection Failure", "Unable to fetch updates", MessageBoxButton.OK);
+                        break;
+                    case WebExceptionStatus.ServerProtocolViolation:
+                        System.Windows.MessageBox.Show("Server Protocol Violation", "Unable to fetch updates", MessageBoxButton.OK);
+                        break;
+                    case WebExceptionStatus.ReceiveFailure:
+                        System.Windows.MessageBox.Show("Receive Failure", "Unable to fetch updates", MessageBoxButton.OK);
+                        break;
+                    case WebExceptionStatus.NameResolutionFailure:
+                        System.Windows.MessageBox.Show("Could not resolve hostname", "Unable to fetch updates", MessageBoxButton.OK);
+                        break;
+                }
             }
             
                 
