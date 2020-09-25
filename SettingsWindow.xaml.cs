@@ -148,6 +148,8 @@ namespace Clair
                 process.StartInfo.FileName = targetDir + "\\spotdl.exe";
                 process.StartInfo.Arguments = "-q best -f "+ Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + " -s \"" + downloaderTitleField.Text + "\"";
                 process.Start();
+                process.WaitForExit();
+                System.Windows.MessageBox.Show("Localization: " + Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Download Completed", MessageBoxButton.OK);
             }
         }
     }
