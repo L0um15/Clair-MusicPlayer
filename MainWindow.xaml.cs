@@ -113,7 +113,7 @@ namespace Clair
         {
             try
             {
-                string ver = new WebClient().DownloadString("https://raw.githubusercontent.com/L0um15/Clair-MusicPlayer/feature_UpdateNotifier/version.txt");
+                string ver = new WebClient().DownloadString("https://raw.githubusercontent.com/L0um15/Clair-MusicPlayer/master/version.txt");
                 if (ver != version)
                 {
                     MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Shall i open Github Page?", "New Version Available!", MessageBoxButton.YesNo);
