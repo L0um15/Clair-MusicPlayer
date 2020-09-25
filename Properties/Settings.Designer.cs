@@ -70,5 +70,17 @@ namespace Clair.Properties {
                 this["lastKnownDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool isCheckingUpdates {
+            get {
+                return ((bool)(this["isCheckingUpdates"]));
+            }
+            set {
+                this["isCheckingUpdates"] = value;
+            }
+        }
     }
 }

@@ -14,5 +14,8 @@
     <Setting Name="lastKnownDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">nopath</Value>
     </Setting>
+    <Setting Name="isCheckingUpdates" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

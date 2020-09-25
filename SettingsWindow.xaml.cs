@@ -27,6 +27,8 @@ namespace Clair
 
             // Sets checkbox to match user settings.
 
+            checkUpdatesCheckbox.IsChecked = Settings.Default.isCheckingUpdates;
+
             autoShuffleCheckbox.IsChecked = Settings.Default.isAutoShuffleEnabled;
 
             enableExtensionsCheckbox.IsChecked = Settings.Default.isUnsupportedExtensionsEnabled;
@@ -100,6 +102,26 @@ namespace Clair
             if (Settings.Default.isUnsupportedExtensionsEnabled == true)
             {
                 Settings.Default.isUnsupportedExtensionsEnabled = false;
+                Settings.Default.Save();
+
+            }
+        }
+
+        private void checkUpdatesCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (Settings.Default.isCheckingUpdates == false)
+            {
+                Settings.Default.isCheckingUpdates = true;
+                Settings.Default.Save();
+
+            }
+        }
+
+        private void checkUpdatesCheckbox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (Settings.Default.isCheckingUpdates == true)
+            {
+                Settings.Default.isCheckingUpdates = false;
                 Settings.Default.Save();
 
             }

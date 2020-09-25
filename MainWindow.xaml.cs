@@ -57,11 +57,12 @@ namespace Clair
             durationTimer.Interval = new TimeSpan(0, 0, 1);
             volumeSlider.IsMoveToPointEnabled = true;
 
-            checkVersion();
-
             // User Settings
 
             volumeSlider.Value = (double) Settings.Default.volumelevel;
+
+            if (Settings.Default.isCheckingUpdates)
+                checkVersion();
 
             if (Settings.Default.lastKnownDirectory != "nopath")
             {
