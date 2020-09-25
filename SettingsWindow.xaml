@@ -25,13 +25,20 @@
                HorizontalAlignment="Left" VerticalAlignment="Top"
                Cursor="Hand"
                Height="60" Width="178" MouseLeftButtonDown="homeButton_MouseLeftButtonDown"/>
+        <Label Foreground="#FFF" Background="#040404"
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+               Content="Music Downloader" FontSize="14"
+               x:Name="downloaderButton"
+               HorizontalAlignment="Left" VerticalAlignment="Top"
+               Cursor="Hand"
+               Height="60" Width="178" Margin="0,60,0,0" MouseLeftButtonDown="downloaderButton_MouseLeftButtonDown"/>
         <Label Foreground="#FFF" Background="#040404        "
                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                Content="About" FontSize="14"
                x:Name="aboutButton"
                HorizontalAlignment="Left" VerticalAlignment="Top"
                Cursor="Hand"
-               Height="60" Width="178" MouseLeftButtonDown="aboutButton_MouseLeftButtonDown" Margin="0,60,0,0"/>
+               Height="60" Width="178" MouseLeftButtonDown="aboutButton_MouseLeftButtonDown" Margin="0,120,0,0"/>
 
         <Grid Visibility="Visible" Grid.Column="1" Name="homeGrid">
             <CheckBox x:Name="autoShuffleCheckbox"
@@ -45,7 +52,28 @@
                       Foreground="#FFF" Content="Check for Updates" 
                       Margin="50,50,586,611" Checked="checkUpdatesCheckbox_Checked" Unchecked="checkUpdatesCheckbox_Unchecked" />
         </Grid>
-        <Grid Visibility="Collapsed" Grid.Column="1" Name="aboutGrid">
+        <Grid Visibility="Hidden" Grid.Column="1" Name="downloaderGrid">
+            <TextBlock Foreground="#FFF" FontSize="24" Text="Music Downloader" Height="32" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"/>
+            <TextBox x:Name="downloaderTitleField" Style="{StaticResource searchboxStyle}"
+                     HorizontalAlignment="Center" VerticalAlignment="Top"
+                     Margin="0,135,0,0" FontSize="14" 
+                     TextAlignment="Center" 
+                     Width="300" Height="30"
+                     KeyDown="downloaderTitleField_KeyDown"/>
+            <TextBlock Foreground="#FFF" FontSize="16" 
+                       Height="auto"
+                       HorizontalAlignment="Left" VerticalAlignment="Top"
+                       TextWrapping="Wrap"
+                       Margin="50,200,5,0">
+                Here you can find how it works: 
+                <Hyperlink 
+                    Foreground="#eb345f" RequestNavigate="Hyperlink_RequestNavigate" 
+                    NavigateUri="https://github.com/ritiek/spotify-downloader/blob/master/README.md">
+                    Spotdl Readme.md (Python)
+                </Hyperlink>
+            </TextBlock>
+        </Grid>
+        <Grid Visibility="Hidden" Grid.Column="1" Name="aboutGrid">
             <TextBlock Foreground="#FFF" FontSize="24" Text="About" Height="32" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"/>
             <TextBlock Foreground="#FFF" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,100,50,0">
                 Author: L0um15 <LineBreak />
@@ -54,10 +82,15 @@
                     Foreground="#eb345f" RequestNavigate="Hyperlink_RequestNavigate" 
                     NavigateUri="https://github.com/L0um15/Clair-Musicplayer/">
                     Clair Musicplayer Home Website
-                </Hyperlink> 
-                
-                
-                
+                </Hyperlink> <LineBreak />
+                 Spotify Downloader by ritiek (spotdl): <Hyperlink 
+                    Foreground="#eb345f" RequestNavigate="Hyperlink_RequestNavigate" 
+                    NavigateUri="https://github.com/ritiek/spotify-downloader">
+                    Spotdl Home Website (Python)
+                </Hyperlink>
+
+
+
             </TextBlock>
         </Grid>
 

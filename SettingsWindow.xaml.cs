@@ -41,7 +41,8 @@ namespace Clair
             if(homeGrid.Visibility != Visibility.Visible)
             {
                 homeGrid.Visibility = Visibility.Visible;
-                aboutGrid.Visibility = Visibility.Collapsed;
+                aboutGrid.Visibility = Visibility.Hidden;
+                downloaderGrid.Visibility = Visibility.Hidden;
             }
         }
 
@@ -51,7 +52,18 @@ namespace Clair
             if (aboutGrid.Visibility != Visibility.Visible)
             {
                 aboutGrid.Visibility = Visibility.Visible;
-                homeGrid.Visibility = Visibility.Collapsed;
+                homeGrid.Visibility = Visibility.Hidden;
+                downloaderGrid.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void downloaderButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (downloaderGrid.Visibility != Visibility.Visible)
+            {
+                downloaderGrid.Visibility = Visibility.Visible;
+                aboutGrid.Visibility = Visibility.Hidden;
+                homeGrid.Visibility = Visibility.Hidden;
             }
         }
 
@@ -124,6 +136,18 @@ namespace Clair
                 Settings.Default.isCheckingUpdates = false;
                 Settings.Default.Save();
 
+            }
+        }
+
+        private void downloaderTitleField_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                string targetDir = AppDomain.CurrentDomain.BaseDirectory + "\\resources\\spotdl";
+                Process process = new Process();
+                process.StartInfo.FileName = targetDir + "\\spotdl.exe";
+                process.StartInfo.Arguments = "-q best -f "+ Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + " -s \"" + downloaderTitleField.Text + "\"";
+                process.Start();
             }
         }
     }

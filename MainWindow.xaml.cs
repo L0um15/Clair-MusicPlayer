@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Packaging;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -25,6 +26,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.IO.Compression;
 
 namespace Clair
 {
@@ -56,6 +58,16 @@ namespace Clair
 
             durationTimer.Interval = new TimeSpan(0, 0, 1);
             volumeSlider.IsMoveToPointEnabled = true;
+
+            string targetDir = AppDomain.CurrentDomain.BaseDirectory + "\\resources\\";
+            string targetZip = AppDomain.CurrentDomain.BaseDirectory + "\\resources\\spotdl.zip";
+
+            if (File.Exists(targetZip) && !Directory.Exists(targetDir + "\\spotdl")) { 
+                System.Windows.MessageBox.Show("Installation Request.\n" +
+                    "Files will be extracted in background.", "Installation", MessageBoxButton.OK);
+                ZipFile.ExtractToDirectory(targetZip, targetDir);
+                File.Delete(targetZip);
+            }
 
             // User Settings
 
