@@ -66,7 +66,13 @@ namespace Clair
 
             if (Settings.Default.lastKnownDirectory != "nopath")
             {
-                try { filePaths = Directory.GetFiles(Settings.Default.lastKnownDirectory, "*.mp3"); } catch (DirectoryNotFoundException)
+                try {
+                    if (!Settings.Default.isUnsupportedExtensionsEnabled)
+                        filePaths = Directory.GetFiles(Settings.Default.lastKnownDirectory, "*.mp3");
+                    else
+                        filePaths = Directory.GetFiles(Settings.Default.lastKnownDirectory, "*.*");
+                } 
+                catch (DirectoryNotFoundException)
                 {
                     Settings.Default.lastKnownDirectory = "nopath";
                     Settings.Default.Save();
@@ -136,10 +142,7 @@ namespace Clair
                         System.Windows.MessageBox.Show("Could not resolve hostname", "Unable to fetch updates", MessageBoxButton.OK);
                         break;
                 }
-            }
-            
-                
-
+            }   
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
