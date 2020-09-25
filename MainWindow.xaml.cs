@@ -66,8 +66,12 @@ namespace Clair
 
             if (Settings.Default.lastKnownDirectory != "nopath")
             {
-
-                filePaths = Directory.GetFiles(Settings.Default.lastKnownDirectory, "*.mp3");
+                try { filePaths = Directory.GetFiles(Settings.Default.lastKnownDirectory, "*.mp3"); } catch (DirectoryNotFoundException)
+                {
+                    Settings.Default.lastKnownDirectory = "nopath";
+                    Settings.Default.Save();
+                    return;
+                }
 
                 if (Settings.Default.isAutoShuffleEnabled)
                     randomizeSongSelection(filePaths);
