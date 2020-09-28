@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Clair.Properties;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace Clair
 {
@@ -141,15 +143,35 @@ namespace Clair
 
         private void downloaderTitleField_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
-                string targetDir = AppDomain.CurrentDomain.BaseDirectory + "\\resources\\spotdl";
-                Process process = new Process();
-                process.StartInfo.FileName = targetDir + "\\spotdl.exe";
-                process.StartInfo.Arguments = "-q best -f "+ Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + " -s \"" + downloaderTitleField.Text + "\"";
-                process.Start();
-                process.WaitForExit();
-                System.Windows.MessageBox.Show("Localization: " + Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Download Completed", MessageBoxButton.OK);
+                string targetDir = AppDomain.CurrentDomain.BaseDirectory + "\\resources";
+                try
+                {
+                    Process ffmpegDetection = new Process();
+                    ffmpegDetection.StartInfo.FileName = "ffmpeg.exe";
+                    ffmpegDetection.Start();
+                    ffmpegDetection.WaitForExit();
+                }
+                catch (Win32Exception)
+                {
+                    //  ffmpeg is not in PATH Variable
+                    Environment.SetEnvironmentVariable("PATH", targetDir + "\\binaries");
+                }
+                Process spotdlProcess = new Process();
+                spotdlProcess.StartInfo.FileName = targetDir + "\\spotdl\\spotdl.exe";
+                spotdlProcess.StartInfo.Arguments = "-q best -f " + Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + " -s \"" + downloaderTitleField.Text + "\"";
+                spotdlProcess.Start();
+                spotdlProcess.WaitForExit();
+                using (TaskbarIcon taskbar = new TaskbarIcon())
+                {
+                    taskbar.ShowBalloonTip(
+                        "Download Finished!.",
+                        "Localization: " + Environment.GetFolderPath(Environment.SpecialFolder.MyMusic),
+                        BalloonIcon.None
+                    );
+                    taskbar.Visibility = Visibility.Visible;
+                }
             }
         }
     }
