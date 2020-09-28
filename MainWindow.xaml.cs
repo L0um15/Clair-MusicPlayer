@@ -34,7 +34,7 @@ namespace Clair
     {
 
         // Global Variables
-        String version = "pre-6.0";
+        String version = "pre-6.1";
         Double tempVolume;
         String[] filePaths;
         bool isMediaPlaying = false;
@@ -62,7 +62,7 @@ namespace Clair
             string targetDir = AppDomain.CurrentDomain.BaseDirectory + "\\resources\\";
             string targetZip = AppDomain.CurrentDomain.BaseDirectory + "\\resources\\spotdl.zip";
 
-            if (File.Exists(targetZip) && !Directory.Exists(targetDir + "\\spotdl")) { 
+            if (File.Exists(targetZip) && !Directory.Exists(targetDir + "\\spotdl")) {
                 System.Windows.MessageBox.Show("Installation Request.\n" +
                     "Files will be extracted in background.", "Installation", MessageBoxButton.OK);
                 ZipFile.ExtractToDirectory(targetZip, targetDir);
