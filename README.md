@@ -4,7 +4,7 @@
 ![ISSUES OPEN](https://img.shields.io/github/issues/L0um15/Clair-Musicplayer?label=ISSUES)
 ![LAST COMMIT](https://img.shields.io/github/last-commit/L0um15/Clair-Musicplayer)
 
-![VERSION](https://img.shields.io/badge/.NET-%3E%3D4.0-informational)
+![VERSION](https://img.shields.io/badge/.NET-%3E%3D4.7.2-informational)
 ![LICENSE](https://img.shields.io/github/license/L0um15/Clair-Musicplayer)
 ![HEART](https://img.shields.io/badge/Made%20with-Heart%20%E2%9D%A4%EF%B8%8F-%23eb345f)
 
