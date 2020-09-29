@@ -59,16 +59,6 @@ namespace Clair
             durationTimer.Interval = new TimeSpan(0, 0, 1);
             volumeSlider.IsMoveToPointEnabled = true;
 
-            string targetDir = AppDomain.CurrentDomain.BaseDirectory + "\\resources\\";
-            string targetZip = AppDomain.CurrentDomain.BaseDirectory + "\\resources\\spotdl.zip";
-
-            if (File.Exists(targetZip) && !Directory.Exists(targetDir + "\\spotdl")) {
-                System.Windows.MessageBox.Show("Installation Request.\n" +
-                    "Files will be extracted in background.", "Installation", MessageBoxButton.OK);
-                ZipFile.ExtractToDirectory(targetZip, targetDir);
-                File.Delete(targetZip);
-            }
-
             // User Settings
 
             volumeSlider.Value = (double) Settings.Default.volumelevel;
@@ -116,7 +106,8 @@ namespace Clair
                 string ver = new WebClient().DownloadString("https://raw.githubusercontent.com/L0um15/Clair-MusicPlayer/master/version.txt");
                 if (ver != version)
                 {
-                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Shall i open Github Page?", "New Version Available!", MessageBoxButton.YesNo);
+                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("New version is available to download.\n" +
+                        "Should i open github page?", "Information", MessageBoxButton.YesNo);
                     if (messageBoxResult == MessageBoxResult.Yes)
                     {
                         Process.Start(new ProcessStartInfo("https://github.com/L0um15/Clair-MusicPlayer"));
