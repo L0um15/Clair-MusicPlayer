@@ -85,7 +85,7 @@
             <TextBlock Foreground="#FFF" FontSize="24" Text="About" Height="32" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"/>
             <TextBlock Foreground="#FFF" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,100,50,0">
                 Author: L0um15 <LineBreak />
-                Project Version: pre-6.1 <LineBreak />
+                Project Version: pre-6.2 <LineBreak />
                 Project Website: <Hyperlink 
                     Foreground="#eb345f" RequestNavigate="Hyperlink_RequestNavigate" 
                     NavigateUri="https://github.com/L0um15/Clair-Musicplayer/">

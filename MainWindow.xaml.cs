@@ -34,7 +34,7 @@ namespace Clair
     {
 
         // Global Variables
-        String version = "pre-6.1";
+        String version = "pre-6.2";
         Double tempVolume;
         String[] filePaths;
         bool isMediaPlaying = false;
