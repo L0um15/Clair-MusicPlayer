@@ -40,7 +40,7 @@
                Cursor="Hand"
                Height="60" Width="178" MouseLeftButtonDown="aboutButton_MouseLeftButtonDown" Margin="0,120,0,0"/>
 
-        <Grid Visibility="Hidden" Grid.Column="1" Name="homeGrid">
+        <Grid Visibility="Visible" Grid.Column="1" Name="homeGrid">
             <CheckBox x:Name="autoShuffleCheckbox"
                       Foreground="#FFF" Content="Auto-Shuffle Playlist"
                       Margin="50,85,586,576" Checked="autoShuffleCheckbox_Checked" 
@@ -52,7 +52,7 @@
                       Foreground="#FFF" Content="Check for Updates" 
                       Margin="50,50,586,611" Checked="checkUpdatesCheckbox_Checked" Unchecked="checkUpdatesCheckbox_Unchecked" />
         </Grid>
-        <Grid Visibility="Visible" Grid.Column="1" Name="downloaderGrid">
+        <Grid Visibility="Hidden" Grid.Column="1" Name="downloaderGrid">
             <TextBlock Foreground="#FFF" FontSize="24" Text="Music Downloader" Height="32" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"/>
             <TextBox x:Name="downloaderTitleField" Style="{StaticResource searchboxStyle}"
                      HorizontalAlignment="Center" VerticalAlignment="Top"
