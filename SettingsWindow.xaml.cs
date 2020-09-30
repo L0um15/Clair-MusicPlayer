@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -146,6 +148,8 @@ namespace Clair
             if (e.Key == Key.Enter)
             {
                 string targetDir = AppDomain.CurrentDomain.BaseDirectory + "\\resources";
+                string musicDir = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+
                 try
                 {
                     Process ffmpegDetection = new Process();
@@ -158,21 +162,59 @@ namespace Clair
                     //  ffmpeg is not in PATH Variable
                     Environment.SetEnvironmentVariable("PATH", targetDir + "\\binaries");
                 }
-                Process spotdlProcess = new Process();
-                spotdlProcess.StartInfo.FileName = targetDir + "\\spotdl\\spotdl.exe";
-                spotdlProcess.StartInfo.Arguments = "-q best -f " + Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + " -s \"" + downloaderTitleField.Text + "\"";
-                spotdlProcess.Start();
-                spotdlProcess.WaitForExit();
+
+                if (isUrlValid(downloaderTitleField.Text))
+                {
+                    Process spotdlProcess = new Process();
+                    spotdlProcess.StartInfo.FileName = targetDir + "\\spotdl\\spotdl.exe";
+                    spotdlProcess.StartInfo.Arguments = "-p "
+                        + downloaderTitleField.Text
+                        +" --write-to " 
+                        + musicDir 
+                        +"\\0playlist.txt";
+                    spotdlProcess.Start();
+                    spotdlProcess.WaitForExit();
+                    if (!File.Exists(musicDir + "\\0playlist.txt"))
+                        return;
+                    Directory.CreateDirectory(musicDir + "\\downloaded-playlist");
+                    spotdlProcess.StartInfo.Arguments = "-l "
+                        + musicDir + "\\0playlist.txt"
+                        + " -f "
+                        + musicDir
+                        + "\\downloaded-playlist\\";
+                    spotdlProcess.Start();
+                    spotdlProcess.WaitForExit();
+                    File.Delete(musicDir + "\\0playlist.txt");
+                }
+                else
+                {
+                    Process spotdlProcess = new Process();
+                    spotdlProcess.StartInfo.FileName = targetDir + "\\spotdl\\spotdl.exe";
+                    spotdlProcess.StartInfo.Arguments = "-q best -m -f "
+                        + musicDir
+                        + " -s \"" 
+                        + downloaderTitleField.Text 
+                        + "\"";
+                    spotdlProcess.Start();
+                    spotdlProcess.WaitForExit();
+                }
+                
                 using (TaskbarIcon taskbar = new TaskbarIcon())
                 {
                     taskbar.ShowBalloonTip(
                         "Download Finished!.",
-                        "Localization: " + Environment.GetFolderPath(Environment.SpecialFolder.MyMusic),
+                        "Localization: " + musicDir,
                         BalloonIcon.None
                     );
                     taskbar.Visibility = Visibility.Visible;
                 }
             }
+        }
+        private bool isUrlValid(string URL)
+        {
+            string Pattern = @"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$";
+            Regex Rgx = new Regex(Pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            return Rgx.IsMatch(URL);
         }
     }
 }

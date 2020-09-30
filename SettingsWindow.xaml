@@ -40,7 +40,7 @@
                Cursor="Hand"
                Height="60" Width="178" MouseLeftButtonDown="aboutButton_MouseLeftButtonDown" Margin="0,120,0,0"/>
 
-        <Grid Visibility="Visible" Grid.Column="1" Name="homeGrid">
+        <Grid Visibility="Hidden" Grid.Column="1" Name="homeGrid">
             <CheckBox x:Name="autoShuffleCheckbox"
                       Foreground="#FFF" Content="Auto-Shuffle Playlist"
                       Margin="50,85,586,576" Checked="autoShuffleCheckbox_Checked" 
@@ -52,25 +52,33 @@
                       Foreground="#FFF" Content="Check for Updates" 
                       Margin="50,50,586,611" Checked="checkUpdatesCheckbox_Checked" Unchecked="checkUpdatesCheckbox_Unchecked" />
         </Grid>
-        <Grid Visibility="Hidden" Grid.Column="1" Name="downloaderGrid">
+        <Grid Visibility="Visible" Grid.Column="1" Name="downloaderGrid">
             <TextBlock Foreground="#FFF" FontSize="24" Text="Music Downloader" Height="32" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"/>
             <TextBox x:Name="downloaderTitleField" Style="{StaticResource searchboxStyle}"
                      HorizontalAlignment="Center" VerticalAlignment="Top"
-                     Margin="0,135,0,0" FontSize="14" 
+                     Margin="0,135,0,0" FontSize="16" 
                      TextAlignment="Center" 
-                     Width="300" Height="30"
+                     Width="560" Height="40"
                      KeyDown="downloaderTitleField_KeyDown"/>
             <TextBlock Foreground="#FFF" FontSize="16" 
                        Height="auto"
                        HorizontalAlignment="Left" VerticalAlignment="Top"
                        TextWrapping="Wrap"
                        Margin="50,200,5,0">
-                Here you can find how it works: 
-                <Hyperlink 
-                    Foreground="#eb345f" RequestNavigate="Hyperlink_RequestNavigate" 
-                    NavigateUri="https://github.com/ritiek/spotify-downloader/blob/master/README.md">
-                    Spotdl Readme.md (Python)
-                </Hyperlink>
+                Current Version: 2.2.2 (Outdated)<LineBreak />
+                <LineBreak />
+                Single Track: <LineBreak/>
+                Fill field with (artistname) - (title) to search and download desired track. <LineBreak /><LineBreak />
+                Playlists: <LineBreak/>
+                Paste spotify playlist (URL) to download list of tracks. (Youtube playlists will not work). <LineBreak />
+                Rename <Bold>"downloaded-playlist"</Bold> directory or move files after finished download<LineBreak />
+                Delete <Bold>"0playlist.txt"</Bold> if it was not deleted after finished download<LineBreak />
+                Playlist must be visible to everyone.
+                <LineBreak />
+                <LineBreak />
+                Information:<LineBreak />
+                Spotdl v2 active development is dropped.<LineBreak />
+                I will update it when v3 becomes more stable and less buggy.<LineBreak />
             </TextBlock>
         </Grid>
         <Grid Visibility="Hidden" Grid.Column="1" Name="aboutGrid">
@@ -85,7 +93,7 @@
                 </Hyperlink> <LineBreak />
                  Spotify Downloader by ritiek (spotdl): <Hyperlink 
                     Foreground="#eb345f" RequestNavigate="Hyperlink_RequestNavigate" 
-                    NavigateUri="https://github.com/ritiek/spotify-downloader">
+                    NavigateUri="https://github.com/spotDL/spotify-downloader/">
                     Spotdl Home Website (Python)
                 </Hyperlink>
 
