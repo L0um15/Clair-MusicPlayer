@@ -44,7 +44,6 @@ namespace Clair
         DispatcherTimer durationTimer = new DispatcherTimer();
         TaskbarIcon taskbarIcon = new TaskbarIcon();
 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -56,7 +55,6 @@ namespace Clair
             taskbarIcon.TrayLeftMouseDown += taskbar_TrayLeftMouseDown;
             this.StateChanged += Window_StateChanged;
             this.KeyDown += Window_OnKeyPressed;
-
             durationTimer.Interval = new TimeSpan(0, 0, 1);
             volumeSlider.IsMoveToPointEnabled = true;
 
@@ -206,14 +204,10 @@ namespace Clair
             // Moves to next track if available
 
             if (songList.SelectedIndex < songList.Items.Count - 1)
-            {
                 songList.SelectedIndex += 1;
-            }
             else
             {
-
                 // Hides pause button when there is no more tracks in queue
-
                 playButton.Visibility = Visibility.Visible;
                 pauseButton.Visibility = Visibility.Hidden;
                 isMediaPlaying = false;
@@ -226,16 +220,13 @@ namespace Clair
             // Get Artist and Title if available ...
 
             TagLib.File file = TagLib.File.Create(path);
-
             if (file.Tag.Title != null)
             {
                 songTitle.Content = file.Tag.Title;
                 artistTitle.Content = file.Tag.Artists[0];
             }
             else {
-
                 // ... or set filename as Title
-
                 songTitle.Content = songList.Items[songList.SelectedIndex];
                 artistTitle.Content = null;
             }
@@ -248,14 +239,12 @@ namespace Clair
             // Get Album cover if available
 
             TagLib.File file = TagLib.File.Create(path);
-
             var picture = file.Tag.Pictures.FirstOrDefault();
 
             if (picture != null)
             {
                 MemoryStream memory = new MemoryStream(picture.Data.Data);
                 memory.Seek(0, SeekOrigin.Begin);
-                
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.StreamSource = memory;
@@ -292,7 +281,6 @@ namespace Clair
             // Enables multiple selection
             ofd.Multiselect = true;
 
-
             // Shows only supported files when disabled
             if (!Settings.Default.isUnsupportedExtensionsEnabled)
                 ofd.Filter = "Music files (*.mp3) | *.mp3";
@@ -308,7 +296,6 @@ namespace Clair
                 }
                 // Adds file paths to array
                 filePaths = ofd.FileNames;
-                
 
                 // Randomizes if enabled
                 if(Settings.Default.isAutoShuffleEnabled == true)
@@ -348,7 +335,7 @@ namespace Clair
                 getArtistTagFromFile(filePaths[songList.SelectedIndex]);
                 getAlbumArtFromFile(0,filePaths[songList.SelectedIndex]);
 
-                // Sets Album Cover for secondary ImageBox
+                // Sets Album Cover for second ImageBox
                 if (songList.SelectedIndex + 1 < songList.Items.Count)
                     getAlbumArtFromFile(1, filePaths[songList.SelectedIndex + 1]);
                 else
@@ -390,7 +377,6 @@ namespace Clair
 
             Random rand = new Random();
             for (int i = 0; i < songPaths.Length; i++) {
-
                 int j = rand.Next(i, songPaths.Length);
                 T tempPaths = songPaths[i];
                 songPaths[i] = songPaths[j];
@@ -444,7 +430,6 @@ namespace Clair
 
         private void volumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-
             /*
              * Sets and saves value from volumeSlider to be used after closing application
              */
@@ -457,7 +442,6 @@ namespace Clair
 
         private void durationSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-
             // Sets player position when Left Mouse button is released
 
             mPlayer.Position = TimeSpan.FromSeconds((double)durationSlider.Value);
@@ -585,7 +569,8 @@ namespace Clair
                     }
                 }
 
-            }else if(searchBox.Text == "")
+            }
+            else if(searchBox.Text == "")
             {
                 if (songListFiltered.Visibility == Visibility.Visible)
                 {
@@ -598,7 +583,7 @@ namespace Clair
         {
 
             /*
-             * When searchBox is not focused then this event is being called ...
+             * When searchBox is not focused, this event is being called ...
              * ... every time when key is pressed.
              */
 
@@ -620,6 +605,33 @@ namespace Clair
                         isMediaPlaying = false;
                     }
                     break;
+                case Key.Escape:
+                    if (isMediaPlaying)
+                    {
+                        mPlayer.Stop();
+                        playButton.Visibility = Visibility.Visible;
+                        pauseButton.Visibility = Visibility.Hidden;
+                        isMediaPlaying = false;
+                    }
+                    break;
+                case Key.F1:
+                    Process.Start("https://github.com/L0um15/Clair-MusicPlayer/issues/");
+                    break;
+                case Key.Right:
+                    if (songList.SelectedIndex < songList.Items.Count - 1)
+                        songList.SelectedIndex += 1;
+                    break;
+                case Key.Left:
+                    if (songList.SelectedIndex > 0)
+                        songList.SelectedIndex -= 1;
+                    break;
+                case Key.Up:
+                    volumeSlider.Value += 5;
+                    break;
+                case Key.Down:
+                    volumeSlider.Value -= 5;
+                    break;
+
             }
         }
 
