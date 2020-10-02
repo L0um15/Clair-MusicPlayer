@@ -27,6 +27,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.IO.Compression;
+using TagLib;
 
 namespace Clair
 {
@@ -250,11 +251,6 @@ namespace Clair
 
             var picture = file.Tag.Pictures.FirstOrDefault();
 
-            /*
-             * Other files than mp3 will return blank album cover
-             * TODO: Fix black album cover
-             */
-
             if (picture != null)
             {
                 MemoryStream memory = new MemoryStream(picture.Data.Data);
@@ -272,13 +268,12 @@ namespace Clair
                     albumArtImage3.Source = bitmap;
             }
             else {
-
                 if (index == 0)
-                    albumArtImage.Source = new BitmapImage(new Uri("assets/images/noalbum.jpg", UriKind.RelativeOrAbsolute));
+                    albumArtImage.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
                 else if (index == 1)
-                    albumArtImage2.Source = new BitmapImage(new Uri("assets/images/noalbum.jpg", UriKind.RelativeOrAbsolute));
+                    albumArtImage2.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
                 else if (index == 2)
-                    albumArtImage3.Source = new BitmapImage(new Uri("assets/images/noalbum.jpg", UriKind.RelativeOrAbsolute));
+                    albumArtImage3.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
             }
         }
 
