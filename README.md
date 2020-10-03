@@ -14,7 +14,7 @@
 
 ### This project is using modified spotdl to run without python (ffmpeg is builtin).
 
-### I Highly recommend using Music Downloader in Settings:
+### I Highly recommend using **Music Downloader**:
 <br>
 
 <img src="github/images/1.png"></img><br>
