@@ -225,7 +225,13 @@ namespace Clair
 
             TagLib.File file = TagLib.File.Create(path);
             var picture = file.Tag.Pictures.FirstOrDefault();
-
+            
+            if (index == 0) {
+                if (file.Tag.Lyrics != null)
+                    lyricsField.Text = file.Tag.Lyrics;
+                else
+                    lyricsField.Text = "Lyrics are unavailable.";
+            }
             if (picture != null)
             {
                 MemoryStream memory = new MemoryStream(picture.Data.Data);
@@ -252,6 +258,7 @@ namespace Clair
                     albumArtImage.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
                     blurBackground.Source = new BitmapImage(new Uri("assets/images/pixel.png", UriKind.RelativeOrAbsolute));
                     menuBackground.Opacity = 1;
+                    
                 }
                 else if (index == 1)
                     albumArtImage2.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
@@ -406,6 +413,12 @@ namespace Clair
                     listButton.Opacity = 1;
                     return;
                 }
+                if (lyricsWrapper.Visibility == Visibility.Visible) {
+                    lyricsWrapper.Visibility = Visibility.Hidden;
+                    lyricsButton.Opacity = 1;
+                }
+                    
+
                 songList.Visibility = Visibility.Visible;
                 songListFiltered.Visibility = Visibility.Hidden;
                 searchBox.Visibility = Visibility.Visible;
@@ -640,5 +653,27 @@ namespace Clair
             }
         }
 
+        private void lyricsButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            if (lyricsWrapper.Visibility != Visibility.Visible) {
+                if (songList.Visibility == Visibility.Visible || songListFiltered.Visibility == Visibility.Visible)
+                {
+                    songList.Visibility = Visibility.Hidden;
+                    songListFiltered.Visibility = Visibility.Hidden;
+                    searchBox.Visibility = Visibility.Hidden;
+                    listButton.Opacity = 1;
+                }
+                lyricsWrapper.Visibility = Visibility.Visible;
+                lyricsButton.Opacity = 0.5;
+            }
+            else
+            {
+                lyricsWrapper.Visibility = Visibility.Hidden;
+                lyricsButton.Opacity = 1;
+            }
+
+            
+        }
     }
 }

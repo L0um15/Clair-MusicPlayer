@@ -194,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\images\pixel.png" />
+    <Resource Include="assets\buttons\lyrics.png" />
     <Content Include="resources\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

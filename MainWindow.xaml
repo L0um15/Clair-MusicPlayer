@@ -22,6 +22,7 @@
         <BitmapImage x:Key="expandlistbutton" UriSource="assets/buttons/list.png"/>
         <BitmapImage x:Key="volumeimage" UriSource="assets/buttons/volume.png" />
         <BitmapImage x:Key="settingsbutton" UriSource="assets/buttons/settings.png" />
+        <BitmapImage x:Key="lyricsbutton" UriSource="assets/buttons/lyrics.png" />
         <BitmapImage x:Key="noalbum" UriSource="assets/images/noalbum.png"/>
     </Window.Resources>
 
@@ -30,7 +31,6 @@
             <RowDefinition Height="599*"/>
             <RowDefinition Height="90*"/>
         </Grid.RowDefinitions>
-        <!--<Rectangle Grid.Row="0" Fill="#000"/>-->
         <Rectangle Grid.RowSpan="2" Fill="#000"/>
         <Image x:Name="blurBackground" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True" Grid.RowSpan="2">
             <Image.Effect>
@@ -273,10 +273,33 @@
             RenderOptions.EdgeMode="Aliased"
             HorizontalAlignment="Left"
             Height="40"
-            Margin="1028,24,0,0"
+            Margin="988,24,0,0"
             Grid.Row="1" 
             VerticalAlignment="Top" 
             Width="40"
             Cursor="Hand" MouseLeftButtonDown="settingsButton_MouseLeftButtonDown"/>
+        <Image
+            x:Name="lyricsButton"
+            Source="{StaticResource lyricsbutton}"
+            RenderOptions.BitmapScalingMode="HighQuality"
+            RenderOptions.EdgeMode="Aliased"
+            HorizontalAlignment="Left"
+            Height="40"
+            Margin="1028,24,0,0"
+            Grid.Row="1" 
+            VerticalAlignment="Top" 
+            Width="40"
+            Cursor="Hand" MouseLeftButtonDown="lyricsButton_MouseLeftButtonDown"/>
+        <ScrollViewer Background="#B3080808" 
+                      x:Name="lyricsWrapper" Visibility="Hidden" 
+                      HorizontalAlignment="Left" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <TextBlock x:Name="lyricsField"
+                   HorizontalAlignment="Left"
+                   Padding="14" Width="323"
+                   TextWrapping="Wrap"
+                   Foreground="#FFF"
+                   VerticalAlignment="Top"/>
+        </ScrollViewer>
+        
     </Grid>
 </Window>
