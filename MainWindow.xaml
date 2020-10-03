@@ -30,8 +30,15 @@
             <RowDefinition Height="599*"/>
             <RowDefinition Height="90*"/>
         </Grid.RowDefinitions>
-        <Rectangle Grid.Row="0" Fill="#000"/>
-        <Rectangle Grid.Row="1" Fill="#171717"/>
+        <!--<Rectangle Grid.Row="0" Fill="#000"/>-->
+        <Rectangle Grid.RowSpan="2" Fill="#000"/>
+        <Image x:Name="blurBackground" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True" Grid.RowSpan="2">
+            <Image.Effect>
+                <BlurEffect KernelType="Gaussian" Radius="20" />
+            </Image.Effect>
+        </Image>
+        <Rectangle Grid.Row="0" Opacity="0.2" Fill="#000"/>
+        <Rectangle x:Name="menuBackground" Grid.Row="1" Fill="#171717"/>
         <Image 
             x:Name="albumArtImage" 
             Source="{StaticResource noalbum}"

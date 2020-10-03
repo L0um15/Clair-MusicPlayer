@@ -1,33 +1,17 @@
 ﻿using Clair.Properties;
 using Hardcodet.Wpf.TaskbarNotification;
-using Hardcodet.Wpf.TaskbarNotification.Interop;
-using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.IO.Packaging;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.IO.Compression;
-using TagLib;
 
 namespace Clair
 {
@@ -57,6 +41,8 @@ namespace Clair
             this.KeyDown += Window_OnKeyPressed;
             durationTimer.Interval = new TimeSpan(0, 0, 1);
             volumeSlider.IsMoveToPointEnabled = true;
+
+            blurBackground.Source = new BitmapImage(new Uri("assets/images/pixel.png", UriKind.RelativeOrAbsolute));
 
             // User Settings
 
@@ -97,7 +83,6 @@ namespace Clair
             }
 
         }
-
         private void checkVersion()
         {
             try
@@ -249,16 +234,25 @@ namespace Clair
                 bitmap.BeginInit();
                 bitmap.StreamSource = memory;
                 bitmap.EndInit();
-                if (index == 0)
+                if (index == 0) {
                     albumArtImage.Source = bitmap;
+                    blurBackground.Source = bitmap;
+                    menuBackground.Opacity = 0.7;
+                    songList.Background.Opacity = 0.7;
+                    songListFiltered.Background.Opacity = 0.7;
+                }
                 else if (index == 1)
                     albumArtImage2.Source = bitmap;
                 else if (index == 2)
                     albumArtImage3.Source = bitmap;
+
             }
             else {
-                if (index == 0)
+                if (index == 0) {
                     albumArtImage.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
+                    blurBackground.Source = new BitmapImage(new Uri("assets/images/pixel.png", UriKind.RelativeOrAbsolute));
+                    menuBackground.Opacity = 1;
+                }
                 else if (index == 1)
                     albumArtImage2.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
                 else if (index == 2)
@@ -404,7 +398,16 @@ namespace Clair
 
             if (songList.Visibility == Visibility.Hidden)
             {
+                if(songListFiltered.Visibility == Visibility.Visible)
+                {
+                    songList.Visibility = Visibility.Hidden;
+                    songListFiltered.Visibility = Visibility.Hidden;
+                    searchBox.Visibility = Visibility.Hidden;
+                    listButton.Opacity = 1;
+                    return;
+                }
                 songList.Visibility = Visibility.Visible;
+                songListFiltered.Visibility = Visibility.Hidden;
                 searchBox.Visibility = Visibility.Visible;
                 searchBox.Focus();
                 listButton.Opacity = 0.5;
@@ -558,6 +561,7 @@ namespace Clair
 
                 if (songListFiltered.Visibility == Visibility.Hidden) {
                     songListFiltered.Visibility = Visibility.Visible;
+                    songList.Visibility = Visibility.Hidden;
                 }
 
                 songListFiltered.Items.Clear();
@@ -575,6 +579,7 @@ namespace Clair
                 if (songListFiltered.Visibility == Visibility.Visible)
                 {
                     songListFiltered.Visibility = Visibility.Hidden;
+                    songList.Visibility = Visibility.Visible;
                 }
             }
         }

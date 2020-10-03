@@ -193,8 +193,9 @@
     <Resource Include="assets\buttons\settings.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="assets\images\pixel.png" />
     <Content Include="resources\**">
-       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
