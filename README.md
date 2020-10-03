@@ -8,14 +8,18 @@
 ![LICENSE](https://img.shields.io/github/license/L0um15/Clair-Musicplayer)
 ![HEART](https://img.shields.io/badge/Made%20with-Heart%20%E2%9D%A4%EF%B8%8F-%23eb345f)
 
-## Clair is a musicplayer made in C# using WPF.
+### Clair is a musicplayer made in C# using WPF.
 
-## Integrated [Spotify-Downloader](https://github.com/ritiek/spotify-downloader)
+### Integrated [Spotify-Downloader](https://github.com/ritiek/spotify-downloader)
 
-## This project is using modified spotdl to run without python.
+### This project is using modified spotdl to run without python (ffmpeg is builtin).
 
-### Clair Design (1:1):
+### I Highly recommend using Music Downloader in Settings:
+<br>
 
-<img src="github/images/1.png"></img>
+<img src="github/images/1.png"></img><br>
+<img src="github/images/2.png"></img><br>
+<img src="github/images/3.png"></img><br>
+<img src="github/images/4.png"></img>
 
-## Clair was made with learning purposes in mind but feel free to use it.
+## Clair was created mainly for learning purposes, but now it grew into full project.
