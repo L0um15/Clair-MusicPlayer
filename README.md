@@ -10,7 +10,7 @@
 
 ### Clair is a musicplayer made in C# using WPF.
 
-### Integrated [Spotify-Downloader](https://github.com/ritiek/spotify-downloader)
+### Builtin [Spotify-Downloader](https://github.com/ritiek/spotify-downloader)
 
 ### This project is using modified spotdl to run without python (ffmpeg is builtin).
 
