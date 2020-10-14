@@ -48,21 +48,21 @@ namespace Clair
         }
         public void Pause()
         {
+            mPlayer.Pause();
             if (isMediaPlaying)
             {
                 masterClass.playButton.Visibility = Visibility.Visible;
                 masterClass.pauseButton.Visibility = Visibility.Hidden;
-                mPlayer.Pause();
                 isMediaPlaying = false;
             }
         }
         public void Stop()
         {
+            mPlayer.Stop();
             if (isMediaPlaying)
             {
                 masterClass.playButton.Visibility = Visibility.Visible;
                 masterClass.pauseButton.Visibility = Visibility.Hidden;
-                mPlayer.Stop();
                 isMediaPlaying = false;
             }
         }
@@ -152,6 +152,35 @@ namespace Clair
         {
             if (durationTimer.IsEnabled)
                 durationTimer.Stop();
+        }
+
+        public void loadLastKnownDirectory()
+        {
+            try
+            {
+                if (!Settings.Default.isUnsupportedExtensionsEnabled)
+                    filePaths = Directory.GetFiles(Settings.Default.lastKnownDirectory, "*.mp3");
+                else
+                    filePaths = Directory.GetFiles(Settings.Default.lastKnownDirectory, "*.*");
+            }
+            catch (DirectoryNotFoundException)
+            {
+                Settings.Default.lastKnownDirectory = "nopath";
+                Settings.Default.Save();
+                return;
+            }
+
+            if (Settings.Default.isAutoShuffleEnabled)
+                randomizeTrackSelection(filePaths);
+
+            for (int i = 0; i < filePaths.Length; i++)
+            {
+                masterClass.songList.Items.Add(Path.GetFileNameWithoutExtension(filePaths[i]));
+            }
+            
+            masterClass.songList.SelectedIndex = 0;
+            
+            Pause();
         }
 
         private void randomizeTrackSelection<T>(T[] songPaths)

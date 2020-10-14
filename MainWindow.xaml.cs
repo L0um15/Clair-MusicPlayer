@@ -43,9 +43,9 @@ namespace Clair
             if (Settings.Default.isCheckingUpdates)
                 checkVersion();
 
-            /*if (Settings.Default.lastKnownDirectory != "nopath")
-            {
-                try {
+            if (Settings.Default.lastKnownDirectory != "nopath")
+                musicplayer.loadLastKnownDirectory();
+                /*try {
                     if (!Settings.Default.isUnsupportedExtensionsEnabled)
                         filePaths = Directory.GetFiles(Settings.Default.lastKnownDirectory, "*.mp3");
                     else
