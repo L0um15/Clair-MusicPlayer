@@ -2,14 +2,9 @@
 using Hardcodet.Wpf.TaskbarNotification;
 using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -19,7 +14,6 @@ namespace Clair
     {
 
         // Global Variables
-        String version = "pre-0.7.0";
         Musicplayer musicplayer;
         TaskbarIcon taskbarIcon = new TaskbarIcon();
         public DispatcherTimer durationTimer = new DispatcherTimer();
@@ -44,7 +38,7 @@ namespace Clair
             volumeSlider.Value = (double) Settings.Default.volumelevel;
 
             if (Settings.Default.isCheckingUpdates)
-                checkVersion();
+                VersionHandler.checkForUpdates();
 
             if (Settings.Default.lastKnownDirectory != "nopath")
                 musicplayer.loadLastKnownDirectory();
@@ -54,55 +48,6 @@ namespace Clair
         {
             if (musicplayer.isMediaPlaying)
                 durationSlider.Value = (int) musicplayer.Position.TotalSeconds;
-        }
-
-        private void checkVersion()
-        {
-            try
-            {
-                string ver = new WebClient().DownloadString("https://raw.githubusercontent.com/L0um15/Clair-MusicPlayer/master/version.txt");
-                if (ver != version)
-                {
-                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("New version is available to download.\n" +
-                        "Should i open github page?", "Information", MessageBoxButton.YesNo);
-                    if (messageBoxResult == MessageBoxResult.Yes)
-                    {
-                        Process.Start(new ProcessStartInfo("https://github.com/L0um15/Clair-MusicPlayer"));
-                        this.Close();
-                    }
-
-                }
-            }
-            catch (WebException e)
-            {
-                switch (e.Status)
-                {
-                    case WebExceptionStatus.Timeout:
-                        MessageBox.Show("Connection Timeout.", "Unable to fetch updates", MessageBoxButton.OK);
-                        break;
-                    case WebExceptionStatus.ProtocolError:
-                        MessageBox.Show("ProtocolError", "Unable to fetch updates", MessageBoxButton.OK);
-                        break;
-                    case WebExceptionStatus.RequestCanceled:
-                        MessageBox.Show("Request Canceled", "Unable to fetch updates", MessageBoxButton.OK);
-                        break;
-                    case WebExceptionStatus.UnknownError:
-                        MessageBox.Show("Unknown Error", "Unable to fetch updates", MessageBoxButton.OK);
-                        break;
-                    case WebExceptionStatus.ConnectFailure:
-                        MessageBox.Show("Connection Failure", "Unable to fetch updates", MessageBoxButton.OK);
-                        break;
-                    case WebExceptionStatus.ServerProtocolViolation:
-                        MessageBox.Show("Server Protocol Violation", "Unable to fetch updates", MessageBoxButton.OK);
-                        break;
-                    case WebExceptionStatus.ReceiveFailure:
-                        MessageBox.Show("Receive Failure", "Unable to fetch updates", MessageBoxButton.OK);
-                        break;
-                    case WebExceptionStatus.NameResolutionFailure:
-                        MessageBox.Show("Could not resolve hostname", "Unable to fetch updates", MessageBoxButton.OK);
-                        break;
-                }
-            }   
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
