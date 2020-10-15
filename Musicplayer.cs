@@ -17,12 +17,16 @@ namespace Clair
     {
         
         MainWindow masterClass;
-        bool isMediaPlaying;
         Double tempVolume;
-        public String[] filePaths;
         OpenFileDialog ofd = new OpenFileDialog();
-        DispatcherTimer durationTimer = new DispatcherTimer();
         MediaPlayer mPlayer = new MediaPlayer();
+
+        public bool isMediaPlaying { get; set; }
+        public String[] filePaths { get; set; }
+        public double Volume { get { return mPlayer.Volume; } set { mPlayer.Volume = value; } }
+        public TimeSpan Position { get { return mPlayer.Position;} set { mPlayer.Position = value; } }
+
+
 
         public Musicplayer(MainWindow mainWindow)
         {
@@ -30,8 +34,6 @@ namespace Clair
             masterClass = mainWindow;
             mPlayer.MediaEnded += MPlayer_MediaEnded;
             mPlayer.MediaOpened += MPlayer_MediaOpened;
-            durationTimer.Interval = new TimeSpan(0, 0, 1);
-            durationTimer.Tick += DurationTimer_Tick;
         }
 
         
@@ -69,10 +71,7 @@ namespace Clair
         public void Prepare(String path)
         {
             // Fetch list and prepare track.
-            try {
-                mPlayer.Open(new Uri(path));
-            }
-            catch (IndexOutOfRangeException) { }
+            mPlayer.Open(new Uri(path));
             Play();
         }
         public void Shuffle()
@@ -102,14 +101,6 @@ namespace Clair
                 masterClass.volumeSlider.Value = mPlayer.Volume * 100;
                 masterClass.volumeImage.Opacity = 1;
             }
-        }
-        public void setVolume(double value)
-        {
-            mPlayer.Volume = value;
-        }
-        public void setPosition(TimeSpan value)
-        {
-            mPlayer.Position = value;
         }
         public void openFileDialog()
         {
@@ -141,17 +132,6 @@ namespace Clair
 
             masterClass.songList.SelectedIndex = 0;
 
-        }
-
-        public void StartDurationTimer()
-        {
-            if (!durationTimer.IsEnabled)
-                durationTimer.Start();
-        }
-        public void StopDurationTimer()
-        {
-            if (durationTimer.IsEnabled)
-                durationTimer.Stop();
         }
 
         public void loadLastKnownDirectory()
@@ -204,7 +184,7 @@ namespace Clair
             TimeSpan t = mPlayer.NaturalDuration.TimeSpan;
             string time = t.ToString(@"mm\:ss");
             masterClass.totalTime.Text = time;
-            StartDurationTimer();
+            masterClass.durationTimer.Start();
         }
 
         private void MPlayer_MediaEnded(object sender, EventArgs e)
@@ -214,11 +194,5 @@ namespace Clair
             else
                 Stop();
         }
-        private void DurationTimer_Tick(object sender, EventArgs e)
-        {
-            if (isMediaPlaying)
-                masterClass.durationSlider.Value = (int)mPlayer.Position.TotalSeconds;
-        }
-
     }
 }
