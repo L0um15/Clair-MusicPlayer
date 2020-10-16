@@ -2,9 +2,13 @@
 using Hardcodet.Wpf.TaskbarNotification;
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -89,22 +93,63 @@ namespace Clair
             musicplayer.openFileDialog();
         }
 
+        private void extractMetadata(String path)
+        {
+            TagLib.File file = TagLib.File.Create(path);
+            if (file.Tag.Title != null)
+            {
+                songTitle.Content = file.Tag.Title;
+                artistTitle.Content = file.Tag.Artists[0];
+            }
+            else
+            {
+                songTitle.Content = songList.Items[songList.SelectedIndex];
+                artistTitle.Content = null;
+            }
+
+            if (file.Tag.Lyrics != null)
+                lyricsField.Text = file.Tag.Lyrics;
+            else
+                lyricsField.Text = "No Lyrics Available.";
+        }
+
+        private bool hasAlbumArt(String path)
+        {
+            TagLib.File file = TagLib.File.Create(path);
+            var albumPicture = file.Tag.Pictures.FirstOrDefault();
+            return (albumPicture != null) ? true : false;
+        }
+
+        private ImageSource extractAlbumArt(String path)
+        {
+            TagLib.File file = TagLib.File.Create(path);
+            var albumPicture = file.Tag.Pictures.FirstOrDefault();
+            if (albumPicture != null)
+            {
+                MemoryStream memory = new MemoryStream(albumPicture.Data.Data);
+                memory.Seek(0, SeekOrigin.Begin);
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.StreamSource = memory;
+                bitmap.EndInit();
+                return bitmap;
+            }
+            else
+                return new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
+        }
+
         private void songList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            
             try
             {
                 String path = musicplayer.filePaths[songList.SelectedIndex];
                 musicplayer.Prepare(path);
-                artistTitle.Content = MetadataFactory.getArtist(path, null);
-                songTitle.Content = MetadataFactory.getTitle(path, songList.Items[songList.SelectedIndex].ToString());
-                lyricsField.Text = MetadataFactory.getLyrics(path, "No Lyrics available.");
-                albumArtImage.Source = MetadataFactory.getAlbumPicture(path);
+                extractMetadata(path);
+                albumArtImage.Source = extractAlbumArt(path);
 
-                if (MetadataFactory.hasAlbumPicture(path))
+                if (hasAlbumArt(path))
                 {
-                    blurBackground.Source = MetadataFactory.getAlbumPicture(path);
+                    blurBackground.Source = extractAlbumArt(path);
                     menuBackground.Opacity = 0.7;
                     songList.Background.Opacity = 0.7;
                     songListFiltered.Background.Opacity = 0.7;
@@ -118,12 +163,12 @@ namespace Clair
                 }
 
                 if (songList.SelectedIndex + 1 < songList.Items.Count)
-                    albumArtImage2.Source = MetadataFactory.getAlbumPicture(musicplayer.filePaths[songList.SelectedIndex + 1]);
+                    albumArtImage2.Source = extractAlbumArt(musicplayer.filePaths[songList.SelectedIndex + 1]);
                 else
                     albumArtImage2.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
 
                 if (songList.SelectedIndex + 2 < songList.Items.Count)
-                    albumArtImage3.Source = MetadataFactory.getAlbumPicture(musicplayer.filePaths[songList.SelectedIndex + 2]);
+                    albumArtImage3.Source = extractAlbumArt(musicplayer.filePaths[songList.SelectedIndex + 2]);
                 else
                     albumArtImage3.Source = new BitmapImage(new Uri("assets/images/noalbum.png", UriKind.RelativeOrAbsolute));
             }
@@ -213,9 +258,12 @@ namespace Clair
 
         private void shuffleButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            musicplayer.Shuffle();
-            albumArtImage2.Source = MetadataFactory.getAlbumPicture(musicplayer.filePaths[0]);
-            albumArtImage3.Source = MetadataFactory.getAlbumPicture(musicplayer.filePaths[1]);
+            if(songList.Items.Count > 1)
+            {
+                musicplayer.Shuffle();
+                albumArtImage2.Source = extractAlbumArt(musicplayer.filePaths[0]);
+                albumArtImage3.Source = extractAlbumArt(musicplayer.filePaths[1]);
+            }
         }
 
         private void volumeImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

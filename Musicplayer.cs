@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media;
 using Clair.Properties;
 using System.IO;
+using System.Linq;
 
 namespace Clair
 {
@@ -99,12 +100,17 @@ namespace Clair
         public void openFileDialog()
         {
             ofd.Multiselect = true;
-            if (ofd.ShowDialog() != true) return;
-            
+
             if (!Settings.Default.isUnsupportedExtensionsEnabled)
                 ofd.Filter = "Music files (*.mp3) | *.mp3";
             else
-                ofd.Filter = "All files (*.*) | *.*";
+                ofd.Filter = "All Media files (*.mpg;*.mpeg;*.m1v;*.mp2;*.mp3;" +
+                    "*.mpa;*.mpe;*.m3u;*.mid;*.midi;*.rmi;*.aif;*.aifc;*.aiff;" +
+                    "*.wav;*.mov;*.m4a;*.mp4;*.m4v;*.mp4v;*.3g2;*.3gp2;*.3gp;*.3gpp;*.aac) |" +
+                    " *.mpg;*.mpeg;*.m1v;*.mp2;*.mp3;*.mpa;*.mpe;*.m3u;*.mid;*.midi;*.rmi;*.aif;*.aifc;*.aiff;" +
+                    "*.wav;*.mov;*.m4a;*.mp4;*.m4v;*.mp4v;*.3g2;*.3gp2;*.3gp;*.3gpp;*.aac";
+
+            if (ofd.ShowDialog() != true) return;
 
             if (masterClass.songList.Items.Count > 0) {
                 masterClass.songList.Items.Clear();
@@ -135,7 +141,14 @@ namespace Clair
                 if (!Settings.Default.isUnsupportedExtensionsEnabled)
                     filePaths = Directory.GetFiles(Settings.Default.lastKnownDirectory, "*.mp3");
                 else
-                    filePaths = Directory.GetFiles(Settings.Default.lastKnownDirectory, "*.*");
+                {
+                    var allowedExtensions = ".mpg,.mpeg,.m1v,.mp2,.mp3," +
+                    ".mpa,.mpe,.m3u,.mid,.midi,.rmi,.aif,.aifc,.aiff," +
+                    ".wav,.mov,.m4a,.mp4,.m4v,.mp4v,.3g2,.3gp2,.3gp,.3gpp,.aac";
+                    filePaths = Directory.GetFiles(Settings.Default.lastKnownDirectory, "*.*")
+                        .Where(s => allowedExtensions.IndexOf(Path.GetExtension(s)) > -1).ToArray();
+                }
+                    //Do something here
             }
             catch (DirectoryNotFoundException)
             {
@@ -172,13 +185,16 @@ namespace Clair
 
         private void MPlayer_MediaOpened(object sender, EventArgs e)
         {
-            double duration = mPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-            masterClass.durationSlider.Maximum = (int)duration;
-            masterClass.durationSlider.IsMoveToPointEnabled = true;
-            TimeSpan t = mPlayer.NaturalDuration.TimeSpan;
-            string time = t.ToString(@"mm\:ss");
-            masterClass.totalTime.Text = time;
-            masterClass.durationTimer.Start();
+            if (mPlayer.NaturalDuration.HasTimeSpan)
+            {
+                double duration = mPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+                masterClass.durationSlider.Maximum = (int)duration;
+                masterClass.durationSlider.IsMoveToPointEnabled = true;
+                TimeSpan t = mPlayer.NaturalDuration.TimeSpan;
+                string time = t.ToString(@"mm\:ss");
+                masterClass.totalTime.Text = time;
+                masterClass.durationTimer.Start();
+            } 
         }
 
         private void MPlayer_MediaEnded(object sender, EventArgs e)
