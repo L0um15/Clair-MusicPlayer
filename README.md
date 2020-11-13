@@ -10,7 +10,7 @@
 
 ### Clair is a musicplayer made in C# using WPF.
 
-### Check out [SpotiSharp](https://github.com/L0um15/SpotiSharp)
+### Check out [SpotiSharp](https://github.com/L0um15/SpotiSharp) too!
 
 <br>
 
