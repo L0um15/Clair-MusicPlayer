@@ -11,97 +11,40 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="110*"/>
-            <ColumnDefinition Width="519*"/>
+            <ColumnDefinition Width="271*"/>
+            <ColumnDefinition Width="747*"/>
         </Grid.ColumnDefinitions>
         <Rectangle Grid.Column="1" Fill="#080808"/>
         <Rectangle Grid.Column="0" Fill="Black"/>
 
-
-        <Label Foreground="#FFF" Background="#040404"
-               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-               Content="Home" FontSize="14"
-               x:Name="homeButton"
-               HorizontalAlignment="Left" VerticalAlignment="Top"
-               Cursor="Hand"
-               Height="60" Width="178" MouseLeftButtonDown="homeButton_MouseLeftButtonDown"/>
-        <Label Foreground="#FFF" Background="#040404"
-               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-               Content="Music Downloader" FontSize="14"
-               x:Name="downloaderButton"
-               HorizontalAlignment="Left" VerticalAlignment="Top"
-               Cursor="Hand"
-               Height="60" Width="178" Margin="0,60,0,0" MouseLeftButtonDown="downloaderButton_MouseLeftButtonDown"/>
-        <Label Foreground="#FFF" Background="#040404        "
-               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-               Content="About" FontSize="14"
-               x:Name="aboutButton"
-               HorizontalAlignment="Left" VerticalAlignment="Top"
-               Cursor="Hand"
-               Height="60" Width="178" MouseLeftButtonDown="aboutButton_MouseLeftButtonDown" Margin="0,120,0,0"/>
+        <ListBox x:Name="settingsMenu" Background="Black" Foreground="White" BorderThickness="0" SelectionChanged="ListBox_SelectionChanged">
+            <ListBoxItem Cursor="Hand" Content="Main" FontSize="20" Padding="14"/>
+            <ListBoxItem Cursor="Hand" Content="About" FontSize="20" Padding="14"/>
+        </ListBox>
 
         <Grid Visibility="Visible" Grid.Column="1" Name="homeGrid">
             <CheckBox x:Name="autoShuffleCheckbox"
                       Foreground="#FFF" Content="Auto-Shuffle Playlist"
-                      Margin="50,85,586,576" Checked="autoShuffleCheckbox_Checked" 
+                      Margin="50,85,541,576" Checked="autoShuffleCheckbox_Checked" 
                       Unchecked="autoShuffleCheckbox_Unchecked" />
             <CheckBox x:Name="enableExtensionsCheckbox" 
                       Foreground="#FFF" Content="Enable Unsupported extensions" 
-                      Margin="50,120,586,541" Checked="enableExtensionsCheckbox_Checked" Unchecked="enableExtensionsCheckbox_Unchecked" />
+                      Margin="50,120,498,541" Checked="enableExtensionsCheckbox_Checked" Unchecked="enableExtensionsCheckbox_Unchecked" />
             <CheckBox x:Name="checkUpdatesCheckbox" 
                       Foreground="#FFF" Content="Check for Updates" 
-                      Margin="50,50,586,611" Checked="checkUpdatesCheckbox_Checked" Unchecked="checkUpdatesCheckbox_Unchecked" />
-        </Grid>
-        <Grid Visibility="Hidden" Grid.Column="1" Name="downloaderGrid">
-            <TextBlock Foreground="#FFF" FontSize="24" Text="Music Downloader" Height="32" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"/>
-            <TextBox x:Name="downloaderTitleField" Style="{StaticResource searchboxStyle}"
-                     HorizontalAlignment="Center" VerticalAlignment="Top"
-                     Margin="0,135,0,0" FontSize="16" 
-                     TextAlignment="Center" 
-                     Width="560" Height="40"
-                     KeyDown="downloaderTitleField_KeyDown"/>
-            <TextBlock Foreground="#FFF" FontSize="16" 
-                       Height="auto"
-                       HorizontalAlignment="Left" VerticalAlignment="Top"
-                       TextWrapping="Wrap"
-                       Margin="50,200,5,0">
-                Current Version: 2.2.2 (Outdated)<LineBreak />
-                <LineBreak />
-                Single Track: <LineBreak/>
-                Fill field with (artistname) - (title) to search and download desired track. <LineBreak /><LineBreak />
-                Playlists: <LineBreak/>
-                Paste spotify playlist (URL) to download list of tracks. (Youtube playlists will not work). <LineBreak />
-                Rename <Bold>"downloaded-playlist"</Bold> directory or move files after finished download<LineBreak />
-                Delete <Bold>"0playlist.txt"</Bold> if it was not deleted after finished download<LineBreak />
-                Playlist must be visible to everyone.
-                <LineBreak />
-                <LineBreak />
-                Information:<LineBreak />
-                Spotdl v2 active development is dropped.<LineBreak />
-                I will update it when v3 becomes more stable and less buggy.<LineBreak />
-            </TextBlock>
+                      Margin="50,50,564,611" Checked="checkUpdatesCheckbox_Checked" Unchecked="checkUpdatesCheckbox_Unchecked" />
         </Grid>
         <Grid Visibility="Hidden" Grid.Column="1" Name="aboutGrid">
             <TextBlock Foreground="#FFF" FontSize="24" Text="About" Height="32" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"/>
             <TextBlock Foreground="#FFF" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,100,50,0">
                 Author: L0um15 <LineBreak />
-                Project Version: pre-0.7.0 <LineBreak />
+                Project Version: pre-0.7.1 <LineBreak />
                 Project Website: <Hyperlink 
                     Foreground="#eb345f" RequestNavigate="Hyperlink_RequestNavigate" 
                     NavigateUri="https://github.com/L0um15/Clair-Musicplayer/">
                     Clair Musicplayer Home Website
-                </Hyperlink> <LineBreak />
-                 Spotify Downloader by ritiek (spotdl): <Hyperlink 
-                    Foreground="#eb345f" RequestNavigate="Hyperlink_RequestNavigate" 
-                    NavigateUri="https://github.com/spotDL/spotify-downloader/">
-                    Spotdl Home Website (Python)
                 </Hyperlink>
-
-
-
             </TextBlock>
         </Grid>
-
-
     </Grid>
 </Window>

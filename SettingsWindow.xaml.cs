@@ -38,39 +38,20 @@ namespace Clair
             enableExtensionsCheckbox.IsChecked = Settings.Default.isUnsupportedExtensionsEnabled;
 
         }
-
-        private void homeButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            if(homeGrid.Visibility != Visibility.Visible)
+            switch (settingsMenu.SelectedIndex)
             {
-                homeGrid.Visibility = Visibility.Visible;
-                aboutGrid.Visibility = Visibility.Hidden;
-                downloaderGrid.Visibility = Visibility.Hidden;
+                case 0:
+                    homeGrid.Visibility = Visibility.Visible;
+                    aboutGrid.Visibility = Visibility.Hidden;
+                    break;
+                case 1:
+                    homeGrid.Visibility = Visibility.Hidden;
+                    aboutGrid.Visibility = Visibility.Visible;
+                    break;
             }
         }
-
-        private void aboutButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-
-            if (aboutGrid.Visibility != Visibility.Visible)
-            {
-                aboutGrid.Visibility = Visibility.Visible;
-                homeGrid.Visibility = Visibility.Hidden;
-                downloaderGrid.Visibility = Visibility.Hidden;
-            }
-        }
-
-        private void downloaderButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (downloaderGrid.Visibility != Visibility.Visible)
-            {
-                downloaderGrid.Visibility = Visibility.Visible;
-                aboutGrid.Visibility = Visibility.Hidden;
-                homeGrid.Visibility = Visibility.Hidden;
-            }
-        }
-
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
 
@@ -140,29 +121,6 @@ namespace Clair
                 Settings.Default.isCheckingUpdates = false;
                 Settings.Default.Save();
 
-            }
-        }
-
-        private void downloaderTitleField_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                //string targetDir = AppDomain.CurrentDomain.BaseDirectory + "\\resources";
-                //string musicDir = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
-
-
-                System.Windows.MessageBox.Show("Music Downloader is temporarily unavailable.\n", "Sorry!", MessageBoxButton.OK);
-
-                
-                /*using (TaskbarIcon taskbar = new TaskbarIcon())
-                {
-                    taskbar.ShowBalloonTip(
-                        "Download Finished!.",
-                        "Localization: " + musicDir,
-                        BalloonIcon.None
-                    );
-                    taskbar.Visibility = Visibility.Visible;
-                }*/
             }
         }
         private bool isUrlValid(string URL)

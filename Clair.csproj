@@ -90,8 +90,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="assets\styles\listboxitem.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="assets\styles\scrollbar.xaml">
       <SubType>Designer</SubType>
@@ -195,9 +195,6 @@
   <ItemGroup>
     <Resource Include="assets\images\pixel.png" />
     <Resource Include="assets\buttons\lyrics.png" />
-    <Content Include="resources\**">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
